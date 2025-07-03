@@ -1,0 +1,115 @@
+{
+  "active": false,
+  "connections": {
+    "每日触发": {
+      "main": [
+        [
+          {
+            "node": "获取随机菜谱",
+            "output": 0
+          }
+        ]
+      ]
+    },
+    "获取随机菜谱": {
+      "main": [
+        [
+          {
+            "node": "格式化邮件内容",
+            "output": 0
+          }
+        ]
+      ]
+    },
+    "格式化邮件内容": {
+      "main": [
+        [
+          {
+            "node": "发送邮件",
+            "output": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-30T02:22:23.438Z",
+  "id": "DRNrDjuLj9Lyne7X",
+  "isArchived": true,
+  "meta": null,
+  "name": "每日菜谱推荐",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerAt": "08:00",
+        "timezone": "UTC",
+        "mode": "everyDay"
+      },
+      "name": "每日触发",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "id": "node1"
+    },
+    {
+      "parameters": {
+        "url": "https://themealdb.com/api/json/v1/1/random.php",
+        "method": "GET",
+        "options": {
+          "fullResponse": false,
+          "responseFormat": "json"
+        }
+      },
+      "name": "获取随机菜谱",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "id": "node2"
+    },
+    {
+      "parameters": {
+        "values": [
+          {
+            "name": "mailSubject",
+            "value": "随机菜谱推荐：{{ $json.meals.strMeal }}"
+          },
+          {
+            "name": "mailHtml",
+            "value": "<h1>{{ $json.meals.strMeal }}</h1><img src=\"{{ $json.meals.strMealThumb }}\" width=\"300\"><br><p><strong>分类：</strong> {{ $json.meals.strCategory }}</p><p><strong>地区：</strong> {{ $json.meals.strArea }}</p><h2>食材：</h2><ul>{{ Array(20).fill(0).map((_, i) => {\n                    const ingredient = $json.meals['strIngredient' + (i + 1)];\n                    const measure = $json.meals['strMeasure' + (i + 1)];\n                    return ingredient && measure ? `<li>${ingredient} - ${measure}</li>` : '';\n                }).join('') }}</ul><h2>烹饪步骤：</h2><p>{{ $json.meals.strInstructions }}</p><p><a href=\"{{ $json.meals.strSource || $json.meals.strYoutube }}\">查看更多</a></p>"
+          }
+        ],
+        "mode": "merge"
+      },
+      "name": "格式化邮件内容",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "id": "node3"
+    },
+    {
+      "parameters": {
+        "to": "your_email@example.com",
+        "subject": "{{ $json.mailSubject }}",
+        "html": "{{ $json.mailHtml }}",
+        "authentication": "smtp"
+      },
+      "name": "发送邮件",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "id": "node4"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-30T02:24:16.000Z",
+  "versionId": "d5289139-86d7-45ed-ba55-d3718e3f9435"
+}
