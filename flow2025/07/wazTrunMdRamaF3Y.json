@@ -1,0 +1,636 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "Gemini总结toJson2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini总结toJson2": {
+      "main": [
+        [
+          {
+            "node": "Notion Markdown1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Markdown1": {
+      "main": [
+        [
+          {
+            "node": "Create a database page1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gemini总结toJson2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T16:44:26.182Z",
+  "id": "wazTrunMdRamaF3Y",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "rss to notion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rsstonotion",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -840
+      ],
+      "id": "db7eda88-5c26-4e00-b54c-0fecbfd0c59a",
+      "name": "Webhook",
+      "webhookId": "68a8bcf0-077a-453c-8edf-da9107f9324c"
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        -900
+      ],
+      "id": "c71b4cd3-3851-494c-aabb-e686537e85ed",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=以下是文章的的内容\n文章标题：{{ $('Webhook').item.json.body.entry.title }}， 作者：{{ $('Webhook').item.json.body.entry.author }}，链接：{{ $('Webhook').item.json.body.entry.url }}，发布时间{{ $('Webhook').item.json.body.entry.publishedAt }}，内容：{{ $json.data }}，来源{{ $('Webhook').item.json.body.feed.title }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=# 角色\n你是一个自动化的文章处理程序，你的唯一任务是将输入的文章内容转换成指定的Markdown摘要格式。\n\n# 任务\n根据用户提供的文章，严格遵循下面的【输出模板】进行输出。\n\n# 处理原则\n- 检查并修复内容中的Markdown格式，确保图片不要被[]包裹，确保图片格式为 `![](URL)`。\n- 保持摘要的简洁性，突出关键信息和实用价值。\n- 格式必须统一，方便机器解析。\n\n# 输出模板\n---\n\n| 属性         | 值                                      |\n| :----------- | :-------------------------------------- |\n| **🧑‍💻 作者**   | `[从文章中提取的作者名]`                              |\n| **🌐 来源**   | [点击访问]([从文章中提取的链接])                       |\n| **🗓️ 日期**   | `[从文章中提取的发布时间]`                          |\n| **🏷️ 分类**   | `[来源]`                    |\n\n---\n\n### 📜 **文章原文**\n\n[这里是修复并格式化后的文章内容]\n\n---\n\n### 🔬 **内容解析**\n\n**📌 核心概要**\n*一句话总结：这篇文章主要讲了...*\n\n**🔑 重点提炼**\n1.  **信息点 1**: 描述第一个关键信息。\n2.  **信息点 2**: 描述第二个关键信息。\n3.  **信息点 3**: 描述第三个关键信息。\n\n---\n\n\n# 最终指令\n你的输出必须严格以 `---` 开始，并且完全遵循【输出模板】的结构。不要添加任何模板之外的文字、解释或对话。\n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        1700,
+        -900
+      ],
+      "id": "58534230-7787-4b6e-83d7-eb686b44da1d",
+      "name": "Gemini总结toJson2",
+      "retryOnFail": false,
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "inputMarkdown": "={{ $json.text }}",
+        "outputKey": "children"
+      },
+      "type": "n8n-nodes-notion-markdown.notionMarkdown",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        -1180
+      ],
+      "id": "6f335c7c-6763-4365-89ac-be57f9bd649d",
+      "name": "Notion Markdown1"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "22437ced-5650-801e-ac8e-e9b9cd1e989b",
+          "mode": "list",
+          "cachedResultName": "文章收藏",
+          "cachedResultUrl": "https://www.notion.so/22437ced5650801eac8ee9b9cd1e989b"
+        },
+        "title": "={{ $('Webhook').item.json.body.entry.title }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "作者|rich_text",
+              "textContent": "={{ $ifEmpty($('Webhook').item.json.body.entry?.author, '默认作者') }}"
+            },
+            {
+              "key": "收藏日期|date",
+              "date": "={{new Date()}}"
+            },
+            {
+              "key": "链接|url",
+              "ignoreIfEmpty": true,
+              "urlValue": "={{ $('Webhook').item.json.body.entry.url }}"
+            },
+            {
+              "key": "来源|rich_text",
+              "textContent": "={{ $('Webhook').item.json.body.feed.title }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        2440,
+        -1180
+      ],
+      "id": "773e7622-af77-47b0-a67e-48c09fb3cdb5",
+      "name": "Create a database page1",
+      "credentials": {
+        "notionApi": {
+          "id": "yk1TYESay7e0e83i",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/blocks/{{ $json.id }}/children",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"children\": {{ $('Notion Markdown1').item.json.children.toJsonString() }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2620,
+        -1180
+      ],
+      "id": "1f13d485-5eed-4f15-be55-569101315bef",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "=body.entry.content",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "src",
+              "cssSelector": "img",
+              "returnValue": "attribute",
+              "attribute": "src",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": true
+        }
+      },
+      "name": "HTML Extract",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [
+        370,
+        -960
+      ],
+      "id": "413fb683-a452-4fd8-b05d-551ff8efb6e1"
+    },
+    {
+      "parameters": {},
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -960
+      ],
+      "id": "3b4daadc-cb3e-4f16-9af7-d2d65eb38f4d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- n8n Code Node ---\n// This script replaces URLs in an HTML string based on mapping items.\n// Mode: \"Run Once for All Items\"\n\n// 1. Initialize variables to store our findings.\nlet contentItem = null;      // This will hold the item with the 'data' field.\nconst urlMappings = [];      // This will be an array of {oldUrl, newUrl} objects.\n\n// 2. Loop through all incoming items to categorize them.\nfor (const item of items) {\n  // Check if the current item is the one containing the HTML content.\n  if (item.json.data !== undefined) {\n    contentItem = item;\n  } \n  // Check if the item is a URL mapping rule.\n  else if (item.json.oldulr && item.json.newrl) {\n    urlMappings.push({\n      oldUrl: item.json.oldulr,\n      newUrl: item.json.newrl,\n    });\n  }\n}\n\n// 3. Perform the replacement if we have everything we need.\n// First, check if the content item was actually found.\nif (!contentItem) {\n  // If not, return an error. This is good practice for debugging.\n  return [{ json: { error: \"Execution failed: No item with a 'data' field was found.\" } }];\n}\n\n// If no mapping rules were found, there's nothing to do. Return the original content.\nif (urlMappings.length === 0) {\n    return contentItem;\n}\n\n// Get the HTML string we need to modify.\nlet htmlString = contentItem.json.data;\n\n// Loop through each mapping rule we collected.\nfor (const mapping of urlMappings) {\n  // Use 'replaceAll' to ensure every instance of the old URL is replaced,\n  // not just the first one. This is crucial for content that might link\n  // the same URL multiple times (e.g., in <a> href and <img> src).\n  htmlString = htmlString.replaceAll(mapping.oldUrl, mapping.newUrl);\n}\n\n// 4. Update the original content item with the modified string.\ncontentItem.json.data = htmlString;\n\n// 5. Return only the single, updated content item to the next node.\nreturn contentItem;\n"
+      },
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        -960
+      ],
+      "id": "294d90a5-267e-4138-9b0d-0ba7f9ede00d"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "n8n",
+        "fileName": "={{ $binary.data.fileName.lastIndexOf('.') > -1 ? $binary.data.fileName : $binary.data.fileName + '.' + 'png'}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -1440
+      ],
+      "id": "c8d5499a-af14-4320-ab7b-ebcf1a497f9b",
+      "name": "Upload a file1",
+      "credentials": {
+        "s3": {
+          "id": "DGnyIo44DWm7LQAw",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "src",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        590,
+        -960
+      ],
+      "id": "5605de76-d5e5-46e3-baab-bada8c834ca1",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4bf077cf-ee97-427f-ad45-54e720126e2b",
+              "name": "=newrl",
+              "value": "=http://img.dddd.monster/{{ $('HTTP Request2').item.binary.data.fileName.lastIndexOf('.') > -1 ? $('HTTP Request2').item.binary.data.fileName : $('HTTP Request2').item.binary.data.fileName + '.' + 'png'}}",
+              "type": "string"
+            },
+            {
+              "id": "54a143e0-0c88-4a8f-b4c2-52f7f58c08e3",
+              "name": "oldulr",
+              "value": "={{$('Loop Over Items1').item.json.src}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        -1100
+      ],
+      "id": "5e9d25ad-31f9-444d-a8a0-499860c2c930",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        810,
+        -960
+      ],
+      "id": "24aed31b-db39-4095-80a2-5d00ef035ea6",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1176aa71-23b7-4960-a253-595fb9beedf2",
+              "name": "data",
+              "value": "={{ $json.body.entry.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        820,
+        -660
+      ],
+      "id": "a4ec96bd-64e3-4f16-8541-e3734c51aa1a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "={{$json.src}}",
+        "options": {}
+      },
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1030,
+        -1160
+      ],
+      "id": "63a66bef-3e6b-48f6-a51e-92972240ea15"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1770,
+        -690
+      ],
+      "id": "a59e4508-fd60-4c4b-8769-408971819932",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DGTbpnd2WNVix3Be",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.dddd.monster",
+            "x-forwarded-scheme": "https",
+            "x-forwarded-proto": "https",
+            "x-forwarded-for": "34.56.164.232, 172.70.130.16",
+            "x-real-ip": "172.70.130.16",
+            "content-length": "2327",
+            "accept-language": "*",
+            "sec-fetch-mode": "cors",
+            "baggage": "sentry-environment=stable,sentry-release=d4889a3d6b1e4abbccbfd22ff6ac26006ab6ecbd,sentry-public_key=e5bccf7428aa4e881ed5cb713fdff181,sentry-trace_id=db5bcc5b8efc42389939affc82141ebd,sentry-org_id=4507542488023040,sentry-sampled=true,sentry-sample_rand=0.28433827873179063,sentry-sample_rate=1",
+            "sentry-trace": "db5bcc5b8efc42389939affc82141ebd-aef41bfb65477007-1",
+            "cf-ray": "9595f82bde558711-ORD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "accept-encoding": "gzip, br",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "34.56.164.232",
+            "cf-ipcountry": "US"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "entry": {
+              "feedId": "163428803736203264",
+              "id": "163428803761369089",
+              "title": "小小课堂玲娜贝儿",
+              "url": "https://www.xiaohongshu.com/explore/67d16fad000000002602e67d?xsec_token=AB58uNykHAd6_sgR7NEpRqMlEAGyzBforlsRmfOtwT5OA=&xsec_source=pc_user",
+              "content": "<img src=\"http://sns-webpic-qc.xhscdn.com/202507031744/17c5eb1e9c403df29659044f74ca855d/notes_pre_post/1040g3k831eu72bgnmel043f7gj62n30oot24ob8!nd_dft_wlteh_webp_3\"><br><img src=\"http://sns-webpic-qc.xhscdn.com/202507031744/e1c4d5c49dd516e25e64d4e8bb074f1f/notes_pre_post/1040g3k831eu72bgnmelg43f7gj62n30ot1gttd0!nd_dft_wlteh_webp_3\"><br>是谁拥有了甜妹！<br>小小课堂跟老花适配💯<br>#玲娜贝尔小小课堂",
+              "description": "是谁拥有了甜妹！\n小小课堂跟老花适配💯\n#玲娜贝尔小小课堂",
+              "guid": "https://www.xiaohongshu.com/explore/67d16fad000000002602e67d",
+              "author": "一颗小豆豆",
+              "authorUrl": null,
+              "authorAvatar": null,
+              "insertedAt": "2025-07-03T02:51:02.602Z",
+              "publishedAt": "2025-03-12T11:27:41.662Z",
+              "media": [
+                {
+                  "url": "http://sns-webpic-qc.xhscdn.com/202507031744/17c5eb1e9c403df29659044f74ca855d/notes_pre_post/1040g3k831eu72bgnmel043f7gj62n30oot24ob8!nd_dft_wlteh_webp_3",
+                  "type": "photo",
+                  "width": 0,
+                  "height": 0,
+                  "blurhash": ""
+                },
+                {
+                  "url": "http://sns-webpic-qc.xhscdn.com/202507031744/e1c4d5c49dd516e25e64d4e8bb074f1f/notes_pre_post/1040g3k831eu72bgnmelg43f7gj62n30ot1gttd0!nd_dft_wlteh_webp_3",
+                  "type": "photo",
+                  "width": 0,
+                  "height": 0,
+                  "blurhash": ""
+                }
+              ],
+              "categories": null,
+              "attachments": null,
+              "extra": null,
+              "language": null
+            },
+            "feed": {
+              "id": "163428803736203264",
+              "url": "rsshub://xiaohongshu/user/5659cc2bf53ee0497e3b8c18/notes/displayLivePhoto=1",
+              "title": "一颗小豆豆 - 笔记 • 小红书 / RED",
+              "description": "一颗小豆豆 - 笔记 • 小红书 / RED - Powered by RSSHub",
+              "siteUrl": "https://www.xiaohongshu.com/user/profile/5659cc2bf53ee0497e3b8c18",
+              "image": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo3119h63vrmk0g43f7gj62n30ohih4jm0?imageView2/2/w/540/format/webp",
+              "checkedAt": "2025-07-03T09:44:49.547Z",
+              "lastModifiedHeader": "Thu, 03 Jul 2025 09:44:49 GMT",
+              "etagHeader": "\"25ae-oGulkRpqchIqoIYvYnDoZbeyoFI\"",
+              "ttl": 10,
+              "errorMessage": null,
+              "errorAt": null,
+              "ownerUserId": null,
+              "language": null,
+              "migrateTo": null,
+              "rsshubRoute": "/xiaohongshu/user/:user_id/:category/:routeParams?",
+              "rsshubNamespace": "xiaohongshu",
+              "nsfw": null
+            },
+            "view": 0
+          },
+          "webhookUrl": "http://localhost:5678/webhook/rsstonotion",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Code": [
+      {
+        "json": {
+          "data": "<img src=\"http://img.dddd.monster/1040g3k831eu72bgnmel043f7gj62n30oot24ob8!nd_dft_wlteh_webp_3.png\"><br><img src=\"http://img.dddd.monster/1040g3k831eu72bgnmelg43f7gj62n30ot1gttd0!nd_dft_wlteh_webp_3.png\"><br>是谁拥有了甜妹！<br>小小课堂跟老花适配💯<br>#玲娜贝尔小小课堂"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-03T11:37:26.000Z",
+  "versionId": "51c7624a-9e66-44f0-9446-0103a064832d"
+}
