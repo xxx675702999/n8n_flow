@@ -1,0 +1,203 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "RSS Feed Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feed Read": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T09:34:18.869Z",
+  "id": "0g2DyUfvyRNEhwhH",
+  "isArchived": true,
+  "meta": null,
+  "name": "RSS to AI Summary to Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "e8e19574-d45e-4c7c-9b6f-78a0112dd13b",
+        "options": {}
+      },
+      "id": "1d8e1217-1736-4074-a63e-2b740523e597",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.rssUrl }}",
+        "propertyName": "content:encoded"
+      },
+      "id": "8bbbb405-2384-488b-a2c7-0130985559dc",
+      "name": "RSS Feed Read",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "pageTitle",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "name": "pageContent",
+              "value": "={{ $json.content }}"
+            },
+            {
+              "name": "pageUrl",
+              "value": "={{ $json.link }}"
+            },
+            {
+              "name": "pubDate",
+              "value": "={{ $json.pubDate }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "27684dd2-8d77-4b71-9cae-a10ce3675001",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "messages": [
+            {
+              "role": "user",
+              "content": "=\n你是一位专业的文章摘要助手。请根据以下提供的文章内容，为我生成一份清晰、结构化的Notion笔记。\n请严格按照以下格式输出，不要添加任何额外的解释或开场白：\n\n### 核心摘要\n[这里用一段话总结文章的核心思想]\n\n### 要点列表\n- [要点一]\n- [要点二]\n- [要点三]\n...\n\n### 启发与思考\n[这里写下这篇文章可能带来的启发或值得思考的问题]\n\n---\n**原文信息**\n标题：{{ $('Set').item.json.pageTitle }}\n内容：\n{{ $('Set').item.json.pageContent.substring(0, 3000) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c1f72782-b7ce-45c5-9257-2c9e71d43eb4",
+      "name": "OpenAI",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "databaseOrPage",
+        "operation": "create",
+        "databaseId": "YOUR_NOTION_DATABASE_ID",
+        "title": "={{ $('Set').item.json.pageTitle }}",
+        "properties": {
+          "properties": [
+            {
+              "key": "URL",
+              "value": "={{ $('Set').item.json.pageUrl }}"
+            },
+            {
+              "key": "Published Date",
+              "value": "={{ new Date($('Set').item.json.pubDate).toISOString() }}"
+            }
+          ]
+        },
+        "content": {
+          "content": [
+            {
+              "type": "paragraph",
+              "paragraph": {
+                "richText": [
+                  {
+                    "text": {
+                      "content": "={{ $('OpenAI').item.json.choices[0].message.content }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "id": "eeb01389-9b6f-474c-83b0-469b823e5927",
+      "name": "Notion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3.1,
+      "position": [
+        1340,
+        300
+      ],
+      "credentials": {}
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T15:15:57.000Z",
+  "versionId": "ee014b4d-408d-4770-baf4-2d864be8c853"
+}
