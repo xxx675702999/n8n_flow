@@ -1,0 +1,416 @@
+{
+  "active": false,
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-03T04:31:25.177Z",
+  "id": "ThJVxOCwKOipl2o1",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "HTML Image Upload and Replace",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -215
+      ],
+      "id": "ae07795f-697c-4549-a60a-53c81180fe2b"
+    },
+    {
+      "parameters": {
+        "path": "html-image-replace",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        460,
+        -215
+      ],
+      "id": "c0aeb141-4d0c-464f-8041-f886f10772d7",
+      "webhookId": "2bbbde2d-4cce-4c0e-943a-1f341aff9387"
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "=body.data",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "src",
+              "cssSelector": "img",
+              "returnValue": "attribute",
+              "attribute": "src",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": true
+        }
+      },
+      "name": "HTML Extract",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [
+        680,
+        -340
+      ],
+      "id": "3d390034-a381-4a58-832f-c2330b1ca16a"
+    },
+    {
+      "parameters": {
+        "url": "={{$json.src}}",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1340,
+        -540
+      ],
+      "id": "e6af0b05-48d1-4773-a73b-b935424ad347"
+    },
+    {
+      "parameters": {},
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        -120
+      ],
+      "id": "20229e77-cc41-4ee0-846d-fda474476748"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- n8n Code Node ---\n// This script processes a list of items to replace image URLs in an HTML string.\n// Mode: \"Run Once for All Items\"\n\n// 1. Initialize variables\nconst urlMap = {};\nlet htmlContent = '';\nlet dataItem = null; // This will hold the specific item that contains the HTML data.\n\n// 2. Loop through all incoming items to build the URL map and find the HTML content.\nfor (const item of items) {\n  // Check if the current item contains the 'data' field.\n  if (item.json.data !== undefined) {\n    htmlContent = item.json.data;\n    dataItem = item; // Store this item so we can modify and return it later.\n  } else {\n    // If it's not the data item, it must be a URL mapping item.\n    // These items have one dynamic key which is the image filename/ID.\n    const key = Object.keys(item.json)[0];\n    if (key) {\n      // Add the mapping to our map: { filename: 'http://new.url/filename' }\n      urlMap[key] = item.json[key];\n    }\n  }\n}\n\n// 3. If we successfully found the HTML content and have URLs to replace, proceed.\nif (htmlContent && Object.keys(urlMap).length > 0) {\n  \n  // Iterate over each entry in our URL map (filename -> newUrl).\n  for (const filename in urlMap) {\n    if (urlMap.hasOwnProperty(filename)) {\n      const newUrl = urlMap[filename];\n\n      // To avoid errors, we must escape any special regex characters in the filename.\n      const escapedFilename = filename.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n\n      // Create a precise regular expression. It looks for:\n      // (src=\")   - Group 1: The literal string 'src=\"'\n      // ([^\"]*...) - Group 2: The old URL, matched by finding any characters followed by the unique filename.\n      // (\")       - Group 3: The closing quote of the attribute.\n      // 'g' flag ensures we replace ALL occurrences, not just the first one.\n      const regex = new RegExp(`(src=\")([^\"]*${escapedFilename})(\")`, \"g\");\n      \n      // The replacement string re-uses the captured groups ($1 and $3) \n      // and injects the new URL in the middle.\n      const replacement = `$1${newUrl}$3`;\n      \n      // Perform the replacement on our HTML string.\n      htmlContent = htmlContent.replace(regex, replacement);\n    }\n  }\n}\n\n// 4. Prepare the final output.\nif (dataItem) {\n  // Update the 'data' field in the original item with our modified HTML.\n  dataItem.json.data = htmlContent;\n  \n  // Return only the single, updated item to the next node in the workflow.\n  return dataItem;\n} else {\n  // If for some reason no item with a 'data' field was found, return an error.\n  return { json: { error: \"Execution failed: No item with a 'data' field was found in the input.\" } };\n}\n"
+      },
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        -120
+      ],
+      "id": "13f33d9f-b1c2-40f4-b9b0-29441e6a9c27"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "n8n",
+        "fileName": "={{ $binary.data.fileName }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        -540
+      ],
+      "id": "7389aaca-f225-427e-8c98-497ebe904dbe",
+      "name": "Upload a file1",
+      "credentials": {
+        "s3": {
+          "id": "DGnyIo44DWm7LQAw",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "src",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        900,
+        -340
+      ],
+      "id": "cb9808c4-ae82-402e-ab1e-7b108363492c",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4bf077cf-ee97-427f-ad45-54e720126e2b",
+              "name": "={{ $('HTTP Request').item.binary.data.fileName}}",
+              "value": "=http://img.dddd.monster/{{ $('HTTP Request').item.binary.data.fileName}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1780,
+        -380
+      ],
+      "id": "045f0ac4-7cad-4401-9aa7-284205308a27",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        -340
+      ],
+      "id": "de955ec3-80ff-4700-ac9b-eadd6ba3fdb5",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1176aa71-23b7-4960-a253-595fb9beedf2",
+              "name": "data",
+              "value": "={{ $json.body.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        -60
+      ],
+      "id": "5f6a1268-2787-465e-8439-9eb3636f1638",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "HTML Extract": [
+      {
+        "json": {
+          "src": [
+            "http://sns-webpic-qc.xhscdn.com/202507031038/ebeeee198532aa134a48d9e35a256e67/1040g00831bnvu6ua0k0043f7gj62n30o5kvrch0!nd_dft_wlteh_webp_3",
+            "http://sns-webpic-qc.xhscdn.com/202507031038/b12e0bddbb1f7b145026387f95109532/1040g00831bnvu6ua0k0g43f7gj62n30o4tkr7v8!nd_dft_wlteh_webp_3",
+            "http://sns-webpic-qc.xhscdn.com/202507031038/5453f7213c1733fea9fa2a63d3438d5f/1040g00831bnvu6ua0k1043f7gj62n30o7kqqf6g!nd_dft_wlteh_webp_3"
+          ]
+        }
+      }
+    ],
+    "Split Out": [
+      {
+        "json": {
+          "src": "http://sns-webpic-qc.xhscdn.com/202507031038/ebeeee198532aa134a48d9e35a256e67/1040g00831bnvu6ua0k0043f7gj62n30o5kvrch0!nd_dft_wlteh_webp_3"
+        }
+      },
+      {
+        "json": {
+          "src": "http://sns-webpic-qc.xhscdn.com/202507031038/b12e0bddbb1f7b145026387f95109532/1040g00831bnvu6ua0k0g43f7gj62n30o4tkr7v8!nd_dft_wlteh_webp_3"
+        }
+      },
+      {
+        "json": {
+          "src": "http://sns-webpic-qc.xhscdn.com/202507031038/5453f7213c1733fea9fa2a63d3438d5f/1040g00831bnvu6ua0k1043f7gj62n30o7kqqf6g!nd_dft_wlteh_webp_3"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "content-type": "application/json",
+            "user-agent": "PostmanRuntime/7.44.1",
+            "accept": "*/*",
+            "postman-token": "c8733c13-0dc2-4918-bef5-2c3ce3d4f2f5",
+            "host": "192.168.1.48:5678",
+            "accept-encoding": "gzip, deflate, br",
+            "connection": "keep-alive",
+            "content-length": "597"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "data": "<img src=\"http://sns-webpic-qc.xhscdn.com/202507031038/ebeeee198532aa134a48d9e35a256e67/1040g00831bnvu6ua0k0043f7gj62n30o5kvrch0!nd_dft_wlteh_webp_3\"><br><img src=\"http://sns-webpic-qc.xhscdn.com/202507031038/b12e0bddbb1f7b145026387f95109532/1040g00831bnvu6ua0k0g43f7gj62n30o4tkr7v8!nd_dft_wlteh_webp_3\"><br><img src=\"http://sns-webpic-qc.xhscdn.com/202507031038/5453f7213c1733fea9fa2a63d3438d5f/1040g00831bnvu6ua0k1043f7gj62n30o7kqqf6g!nd_dft_wlteh_webp_3\"><br>娃的画画作业都可以被她承包！<br>低头画了3小时<br>画完姐妹偏头痛犯了<br>太感动啦"
+          },
+          "webhookUrl": "http://localhost:5678/webhook-test/html-image-replace",
+          "executionMode": "test"
+        }
+      }
+    ],
+    "Merge": [
+      {
+        "json": {
+          "1040g00831bnvu6ua0k0043f7gj62n30o5kvrch0!nd_dft_wlteh_webp_3": "http://img.dddd.monster/1040g00831bnvu6ua0k0043f7gj62n30o5kvrch0!nd_dft_wlteh_webp_3"
+        }
+      },
+      {
+        "json": {
+          "1040g00831bnvu6ua0k0g43f7gj62n30o4tkr7v8!nd_dft_wlteh_webp_3": "http://img.dddd.monster/1040g00831bnvu6ua0k0g43f7gj62n30o4tkr7v8!nd_dft_wlteh_webp_3"
+        }
+      },
+      {
+        "json": {
+          "1040g00831bnvu6ua0k1043f7gj62n30o7kqqf6g!nd_dft_wlteh_webp_3": "http://img.dddd.monster/1040g00831bnvu6ua0k1043f7gj62n30o7kqqf6g!nd_dft_wlteh_webp_3"
+        }
+      },
+      {
+        "json": {
+          "data": "<img src=\"http://sns-webpic-qc.xhscdn.com/202507031038/ebeeee198532aa134a48d9e35a256e67/1040g00831bnvu6ua0k0043f7gj62n30o5kvrch0!nd_dft_wlteh_webp_3\"><br><img src=\"http://sns-webpic-qc.xhscdn.com/202507031038/b12e0bddbb1f7b145026387f95109532/1040g00831bnvu6ua0k0g43f7gj62n30o4tkr7v8!nd_dft_wlteh_webp_3\"><br><img src=\"http://sns-webpic-qc.xhscdn.com/202507031038/5453f7213c1733fea9fa2a63d3438d5f/1040g00831bnvu6ua0k1043f7gj62n30o7kqqf6g!nd_dft_wlteh_webp_3\"><br>娃的画画作业都可以被她承包！<br>低头画了3小时<br>画完姐妹偏头痛犯了<br>太感动啦"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-03T15:28:55.000Z",
+  "versionId": "c870ae93-2b53-427e-93ae-24350afbe0f2"
+}
