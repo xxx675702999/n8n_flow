@@ -1,0 +1,161 @@
+{
+  "active": false,
+  "connections": {
+    "n8n 表单触发器": {
+      "main": [
+        [
+          {
+            "node": "图片生成逻辑 (占位符)",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "图片生成逻辑 (占位符)": {
+      "main": [
+        [
+          {
+            "node": "返回生成的图片",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-30T03:48:36.589Z",
+  "id": "iR4ghvntdYoXypaq",
+  "isArchived": true,
+  "meta": null,
+  "name": "Flux 图片生成器 (表单直连版)",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "flux-image-generator-form",
+        "formTitle": "Flux图片生成",
+        "formDescription": "使用新版表单触发器，直接返回图片。",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Prompt",
+              "fieldType": "textarea",
+              "fieldName": "Prompt",
+              "placeholder": "落日晚霞",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "图片比例",
+              "fieldType": "dropdown",
+              "fieldName": "图片比例",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "21:9"
+                  },
+                  {
+                    "option": "16:9"
+                  },
+                  {
+                    "option": "4:3"
+                  },
+                  {
+                    "option": "3:2"
+                  },
+                  {
+                    "option": "1:1"
+                  },
+                  {
+                    "option": "2:3"
+                  },
+                  {
+                    "option": "3:4"
+                  },
+                  {
+                    "option": "9:16"
+                  },
+                  {
+                    "option": "9:21"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "=responseNode",
+        "options": {}
+      },
+      "id": "1aa80c69-05f0-4cb8-8319-865fd56aac16",
+      "name": "n8n 表单触发器",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "imageUrl",
+              "value": "https://n8n.io/n8n-logo-white.svg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e44c2742-d17e-40af-a14f-bbf4b3bd2a47",
+      "name": "图片生成逻辑 (占位符)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1.2,
+      "position": [
+        1100,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "responseCode": 200,
+        "responseData": "string",
+        "options": {
+          "responseHeaders": {
+            "values": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "data": "='<style>body { background-color: #1a1a1a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }</style><img src=\"' + $json.imageUrl + '\" alt=\"Generated Image\" style=\"max-width: 90%; max-height: 90%;\">'"
+      },
+      "id": "a3556950-8919-450f-90be-e02052f7596c",
+      "name": "返回生成的图片",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        440
+      ]
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-30T04:38:04.000Z",
+  "versionId": "6a20aa5b-d736-4ff6-9a76-e4670715371a"
+}
