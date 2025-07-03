@@ -1,0 +1,63 @@
+{
+  "active": false,
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Replace Image URLs",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-03T10:11:14.533Z",
+  "id": "0b7JUyUAvAeMoekY",
+  "isArchived": true,
+  "meta": null,
+  "name": "Image URL Replacer",
+  "nodes": [
+    {
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "id": "3a7f7f6d-3c92-4171-8f2f-485e967ce3b5",
+      "parameters": {}
+    },
+    {
+      "name": "Replace Image URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ],
+      "id": "b3e4f7a6-7b8c-4b5f-8a9a-3d9c2e1f0a1b",
+      "parameters": {
+        "jsCode": "\n// The input data is available in the `items` variable\nconst r2urlItems = items.slice(0, -1);\nconst dataItem = items[items.length - 1];\n\nconst r2urls = r2urlItems.map(item => item.json.r2url);\nlet html = dataItem.json.data;\n\nlet urlIndex = 0;\nconst updatedHtml = html.replace(/<img src=\"([^\"]+)\">/g, (match) => {\n  if (urlIndex < r2urls.length) {\n    const newUrl = r2urls[urlIndex];\n    urlIndex++;\n    return `<img src=\"${newUrl}\">`;\n  }\n  return match; // Keep original if not enough r2urls\n});\n\ndataItem.json.data = updatedHtml;\n\nreturn [dataItem];\n"
+      }
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-03T11:53:18.000Z",
+  "versionId": "fe91d56e-3e77-431e-86af-1e0df9d35e13"
+}
