@@ -1,0 +1,410 @@
+{
+  "active": false,
+  "connections": {
+    "提取有效内容": {
+      "main": [
+        [
+          {
+            "node": "Gemini总结toJson",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gemini总结1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gemini总结toJson",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini总结toJson": {
+      "main": [
+        [
+          {
+            "node": "格式转换",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "格式转换": {
+      "main": [
+        [
+          {
+            "node": "内容同步至notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "读取什么值得买优惠精选": {
+      "main": [
+        [
+          {
+            "node": "提取有效内容",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "每6小时候触发一次": {
+      "main": [
+        [
+          {
+            "node": "读取什么值得买优惠精选",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gemini总结1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini总结1": {
+      "main": [
+        [
+          {
+            "node": "发送邮件",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-27T17:05:40.380Z",
+  "id": "W7GKGqddIIFFyFDX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "什么值得买->notion",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// 获取上一节点传递过来的 items\nconst items = $input.all();\n\n// 创建一个空字符串，用来存储合并后的文本\nlet text = \"\";\n\n// 遍历所有的 items，并提取出所需的信息\nitems.forEach((item, index) => {\n    // 获取当前 item 的信息\n    const creator = item.json.creator;\n    const title = item.json.title;\n    const link = item.json.link;\n    const date = item.json.pubDate\n\n    // 按照指定格式将每个 item 的信息拼接\n    text += `第${index + 1}篇帖子标题：${title} \\n 第${index + 1}篇帖子作者：${creator} \\n 第${index + 1}篇帖子链接：${link}\\n 第${index + 1}篇帖子发布时间：${date}\\n\\n`;\n});\n\n// 将合并后的字符串赋值给 text 变量\nreturn {\n    text: text.trim() // 去除最后的多余换行\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -820,
+        340
+      ],
+      "id": "2d1ae3bd-973f-42da-a902-5e6e6f7c2236",
+      "name": "提取有效内容",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "maxItems": 20
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        720
+      ],
+      "id": "bfccff75-69cf-4262-b8d0-411986833a10",
+      "name": "取前20条帖子"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        560
+      ],
+      "id": "c53f5628-761a-4b85-a66b-69827cdeb86c",
+      "name": "Google Gemini Chat Model1",
+      "notesInFlow": false,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DGTbpnd2WNVix3Be",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=以下为什么值得买的优惠精选的内容\n{{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=你是优惠精选分析助手。针对每篇帖子，请严格按以下的格式提供输出：{\"title\":\"原标题\",\"auth\":\"作者名\",\"link\":\"原链接\",\"date\":\"发布时间\",\"content\":\"用简洁的几个句子全面概括相应帖子内容\",\"key_value\":\"价格：xx元,加额外的几个重点\"}处理原则：- 保持简洁，避免冗长- 突出实用性内容- 如涉及资源，标注使用条件- 如涉及技术，标注关键参数- 输出格式统一，方便阅读，保存json格式- 重要信息优先"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        -480,
+        400
+      ],
+      "id": "9df629cd-e8c4-4316-8384-84e3620ab776",
+      "name": "Gemini总结toJson",
+      "retryOnFail": false,
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取上一节点传递过来的 items\nconst items = $input.all();\nvar text = items[0].json.text;\n\n const cleanStr = text.trim()\n      .replace(/^```json\\n?/, '')\n      .replace(/\\n?```$/, '');\n    return JSON.parse(cleanStr);\n;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        400
+      ],
+      "id": "7e8eab27-89a8-4a4f-bf42-db14e44a90ce",
+      "name": "格式转换",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "https://www.notion.so/21f37ced565080f19aadc7cb2d17e3b0?v=21f37ced565080c6ad70000c063a8f76",
+          "mode": "url"
+        },
+        "title": "={{ $json}}",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "标题|title",
+              "title": "={{ $json.title }}"
+            },
+            {
+              "key": "作者|rich_text",
+              "textContent": "={{ $json.auth }}"
+            },
+            {
+              "key": "内容|rich_text",
+              "textContent": "={{ $json.content }}"
+            },
+            {
+              "key": "原链接|url",
+              "urlValue": "={{ $json.link }}"
+            },
+            {
+              "key": "总结|rich_text",
+              "textContent": "={{ $json.key_value }}"
+            },
+            {
+              "key": "发布时间|date",
+              "date": "={{ $json.date }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        20,
+        400
+      ],
+      "id": "c16e64ac-b986-45be-98b2-49df0c5e32b5",
+      "name": "内容同步至notion",
+      "credentials": {
+        "notionApi": {
+          "id": "yk1TYESay7e0e83i",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://feed.smzdm.com",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -1160,
+        340
+      ],
+      "id": "706c6654-dbb4-4f9a-9efe-bde863c48d46",
+      "name": "读取什么值得买优惠精选",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1340,
+        340
+      ],
+      "id": "8e4cc5e8-9244-4423-b900-10d2118fbe23",
+      "name": "每6小时候触发一次",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "xxx675702999@163.com",
+        "toEmail": "675702999@qq.com",
+        "subject": "什么值得买精选",
+        "emailFormat": "text",
+        "text": "test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        40
+      ],
+      "id": "50812192-68b7-42c1-8ea2-d3fdba9f6be5",
+      "name": "Send email",
+      "webhookId": "1d27553a-61ef-4248-b3d6-c4e0dff0e8df",
+      "credentials": {
+        "smtp": {
+          "id": "z2LApZC6RxR7AdEb",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        140
+      ],
+      "id": "66e4eee3-4eb5-4155-a191-6fa537d5e92b",
+      "name": "Google Gemini Chat Model2",
+      "notesInFlow": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DGTbpnd2WNVix3Be",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=以下为什么值得买的优惠精选的内容\n{{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "你是优惠精选分析助手。针对每篇帖子，请严格按以下的格式提供输出：|    <div class=\"container\">        <div class=\"header\">            <div class=\"title\">xx(序号).原标题:</div>            <div class=\"author\">🖋️作者：作者名</div>            <div><a href=\"原链接\" class=\"link\">🔗链接：原链接</a></div>        </div>        <div class=\"content-section\">            <h3>📊内容分析:</h3>            <ul>                <li><span>📌核心内容：</span>用简洁的几个句子全面概括相应帖子内容</li>                <li><span>🔑重要信息：</span>列出2-3个关键点</li>                <li><span>💡实用价值：</span>提取可操作的信息(如有)</li>            </ul>        </div>    </div>处理原则：- 保持简洁，避免冗长- 突出实用性内容- 如涉及资源，标注使用条件- 如涉及技术，标注关键参数- 输出格式统一，方便阅读，不要有多余的类似“```html”的标识- 重要信息优先"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        -460,
+        -60
+      ],
+      "id": "ee034886-a50c-4495-88df-dc915fc7d39c",
+      "name": "Gemini总结1",
+      "retryOnFail": true,
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "sendTo": "675702999@qq.com",
+        "subject": "什么值得买每日热门消息速递",
+        "message": "=<!DOCTYPE html>\n<html lang=\"zh\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n            line-height: 1.6;\n            margin: 0;\n            padding: 0;\n            background-color: #f4f4f4;\n            color: #333;\n        }\n        .container {\n            max-width: 600px;\n            margin: 20px auto;\n            padding: 20px;\n            background-color: #fff;\n            border-radius: 8px;\n            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n        }\n        .header {\n            text-align: center;\n            margin-bottom: 20px;\n        }\n        .title {\n            font-size: 24px;\n            font-weight: bold;\n            color: #2c3e50;\n        }\n        .author {\n            font-size: 16px;\n            color: #7f8c8d;\n        }\n        .link {\n            font-size: 16px;\n            color: #3498db;\n            text-decoration: none;\n        }\n        .content-section {\n            margin-bottom: 20px;\n        }\n        .content-section h3 {\n            font-size: 18px;\n            color: #2980b9;\n        }\n        .content-section ul {\n            list-style-type: none;\n            padding-left: 0;\n        }\n        .content-section ul li {\n            margin: 10px 0;\n            font-size: 16px;\n        }\n        .content-section ul li span {\n            font-weight: bold;\n        }\n    </style>\n</head>\n<body>\n{{ $('Gemini总结1').item.json.text }}\n</body>\n</html>",
+        "options": {
+          "senderName": "小许每日速递"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -100,
+        -200
+      ],
+      "id": "59635671-922d-4556-aae2-bfffd34b1c2c",
+      "name": "发送邮件",
+      "webhookId": "9a4066fc-4659-4311-a96d-498057cb2310",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ukx4BIMwAGqvuivN",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Gemini总结1": [
+      {
+        "json": {
+          "text": "|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">1.原标题:荣事达 大肚锅24无盖 手工锻打铁锅 24cm 24.82元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929540/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929540/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>荣事达24cm手工锻打铁锅，无盖设计，适合日常家庭烹饪，售价24.82元。</li>\n                <li><span>🔑重要信息：</span>品牌：荣事达；类型：手工锻打铁锅；尺寸：24cm；价格：24.82元。</li>\n                <li><span>💡实用价值：</span>适合日常家庭使用，无盖设计方便烹饪操作。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">2.原标题:茅台酱香酒 茅台王子·金王子 53%vol 酱香型白酒 500ml*2瓶 210元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929409/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929409/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>茅台王子·金王子酱香型白酒，酒精度53%vol，规格为500ml两瓶装，券后价格210元。</li>\n                <li><span>🔑重要信息：</span>品牌：茅台酱香酒；酒精度：53%vol；规格：500ml*2瓶；价格：210元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合酱香型白酒爱好者自饮或送礼，购买前需领取相应优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">3.原标题:老庙黄金 黄金戒指 12号 576元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929389/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929389/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>老庙黄金品牌的一款黄金戒指，12号尺寸，券后价格576元。</li>\n                <li><span>🔑重要信息：</span>品牌：老庙黄金；品类：黄金戒指；尺寸：12号；价格：576元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合作为日常佩戴或送礼，购买时需留意金重和当日金价，并领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">4.原标题:百亿补贴：Rock Cloud 岩云夏季运动户外休闲薄款透气弹力吸湿速干裤时尚男裤长裤 58.76元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929172/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929172/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>Rock Cloud岩云夏季男士运动户外休闲长裤，特点为薄款、透气、弹力吸湿速干，百亿补贴价58.76元。</li>\n                <li><span>🔑重要信息：</span>品牌：Rock Cloud岩云；特点：薄款、透气、弹力、吸湿速干；适用：夏季运动户外休闲；价格：58.76元。</li>\n                <li><span>💡实用价值：</span>适合夏季进行户外运动或日常休闲穿着，提供舒适体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">5.原标题:徐福记 美禄运动力量饼干 216g*2盒 7.39元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929150/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929150/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>徐福记美禄运动力量饼干，216克两盒装，券后价格7.39元。</li>\n                <li><span>🔑重要信息：</span>品牌：徐福记；品类：美禄运动力量饼干；规格：216g*2盒；价格：7.39元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合作为日常零食或运动后补充能量，购买前记得领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">6.原标题:森马 破价！男士户外增高防滑防臭沙滩凉鞋 35.17元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929098/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929098/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>森马男士户外沙滩凉鞋，具备增高、防滑、防臭功能，券后售价35.17元。</li>\n                <li><span>🔑重要信息：</span>品牌：森马；特点：增高、防滑、防臭；适用：男士户外沙滩；价格：35.17元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合夏季户外休闲穿着，性价比高，购买时需领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">7.原标题:百亿补贴：漫花 挂式抽纸 悬挂抽取式卫生纸 家用擦手厕纸 大包装 0.01元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929095/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929095/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>漫花挂式抽纸，悬挂抽取式设计，家用擦手厕纸大包装，百亿补贴价0.01元。</li>\n                <li><span>🔑重要信息：</span>品牌：漫花；类型：挂式抽纸/卫生纸；特点：悬挂抽取式，大包装；价格：0.01元（百亿补贴）。</li>\n                <li><span>💡实用价值：</span>超低价刚需日用品，建议快速购买，通常百亿补贴商品数量有限。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">8.原标题:农夫山泉 NONGFU SPRING 东方树叶青柑普洱茶900ml*12瓶 56.5元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929055/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929055/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>农夫山泉东方树叶青柑普洱茶，900ml大瓶装，一箱12瓶，售价56.5元。</li>\n                <li><span>🔑重要信息：</span>品牌：农夫山泉东方树叶；口味：青柑普洱茶；规格：900ml*12瓶；价格：56.5元。</li>\n                <li><span>💡实用价值：</span>适合日常饮用或囤货，无糖健康饮品。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">9.原标题:美的 KFR-72LW/N8KS1-1P 新一级能效 立柜式空调 3匹 3167.2元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151929013/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151929013/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>美的KFR-72LW/N8KS1-1P立柜式空调，3匹新一级能效，券后价格3167.2元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：美的KFR-72LW/N8KS1-1P；类型：立柜式空调；匹数：3匹；能效：新一级能效；价格：3167.2元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合大客厅或商用空间，新一级能效更节能，购买前需领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">10.原标题:美的 洗衣机全自动滚筒10公斤家用 1.1超高洗净比除菌净螨一级能效节能净速 单洗36 738.55元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928984/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928984/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>美的全自动滚筒洗衣机，10公斤容量，具备1.1超高洗净比、除菌净螨功能，一级能效，节能净速，售价738.55元。</li>\n                <li><span>🔑重要信息：</span>品牌：美的；类型：全自动滚筒洗衣机；容量：10公斤；洗净比：1.1；能效：一级能效；功能：除菌净螨；价格：738.55元。</li>\n                <li><span>💡实用价值：</span>适合家庭日常使用，大容量满足多衣物洗涤需求，一级能效有助于节省电费。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">11.原标题:速卡龙 笔记本 10.5吋/2K双触控屏/出差办公版 高性能爆款/32G+2TB超大内存 2779元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928929/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928929/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>速卡龙10.5英寸笔记本电脑，配备2K双触控屏，专为出差办公设计，拥有32GB内存和2TB超大存储，券后价格2779元。</li>\n                <li><span>🔑重要信息：</span>品牌：速卡龙；尺寸：10.5吋；屏幕：2K双触控屏；内存：32GB；存储：2TB；用途：出差办公；价格：2779元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合需要大内存、大存储、触控功能及便携性的商务办公人士，购买需领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">12.原标题:泰山啤酒 原浆啤酒 450mL*12瓶 41.3元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928868/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928868/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>泰山原浆啤酒，450毫升12瓶装，售价41.3元。</li>\n                <li><span>🔑重要信息：</span>品牌：泰山啤酒；类型：原浆啤酒；规格：450mL*12瓶；价格：41.3元。</li>\n                <li><span>💡实用价值：</span>适合啤酒爱好者日常饮用或聚会，原浆啤酒口感通常更醇厚。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">13.原标题:胜为 LC-1202G 六类CAT6 千兆网线 2m 黑色 1.52元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928852/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928852/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>胜为LC-1202G六类CAT6千兆网线，2米长，黑色，售价1.52元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：胜为LC-1202G；类型：CAT6千兆网线；长度：2m；颜色：黑色；价格：1.52元。</li>\n                <li><span>💡实用价值：</span>适用于家庭或办公室网络连接，支持千兆传输，性价比高。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">14.原标题:安克 A1339 Prime二合一氮化镓充电宝 黑色 9600mAh 65W 264.66元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928827/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928827/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>安克A1339 Prime二合一氮化镓充电宝，9600mAh容量，支持65W快充，黑色，售价264.66元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：安克A1339 Prime；功能：二合一（充电宝+充电器）；技术：氮化镓；容量：9600mAh；快充功率：65W；价格：264.66元。</li>\n                <li><span>💡实用价值：</span>适合经常出差或需要同时充电和移动电源的用户，65W快充可为笔记本电脑提供充电支持。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">15.原标题:太力 超值神车！双筋密封保鲜袋大号20个+中号30个 8.9元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928787/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928787/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>太力双筋密封保鲜袋，包含大号20个和中号30个，券后价格8.9元。</li>\n                <li><span>🔑重要信息：</span>品牌：太力；类型：双筋密封保鲜袋；规格：大号20个+中号30个；价格：8.9元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合家庭日常食物保鲜，超值组合装，购买前需领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">16.原标题:农夫山泉 NONGFU SPRING 东方树叶绿茶无糖茶饮品500ml*15瓶整箱 48元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928758/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928758/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>农夫山泉东方树叶绿茶无糖饮品，500ml小瓶装，整箱15瓶，售价48元。</li>\n                <li><span>🔑重要信息：</span>品牌：农夫山泉东方树叶；口味：绿茶；特点：无糖；规格：500ml*15瓶；价格：48元。</li>\n                <li><span>💡实用价值：</span>适合注重健康的日常饮用，无糖更健康，整箱购买方便囤货。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">17.原标题:倍思 充电宝20000毫安自带线大容量22.5W快充极速数显适用于苹果 67.94元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928713/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928713/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>倍思20000毫安大容量充电宝，自带充电线，支持22.5W快充，带数显，适用于苹果设备，售价67.94元。</li>\n                <li><span>🔑重要信息：</span>品牌：倍思；容量：20000mAh；快充功率：22.5W；特点：自带线，数显；适用：苹果设备；价格：67.94元。</li>\n                <li><span>💡实用价值：</span>适合需要大容量和便携充电的用户，自带线设计方便，支持多设备快充。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">18.原标题:霓峰 小推车置物架厨房落地多层储物架微波炉锅具家用货架子蔬菜篮收纳 3层黑 7.49元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928622/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928622/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>霓峰3层黑色小推车置物架，厨房落地多层设计，可用于储物、放置微波炉、锅具、蔬菜篮等，售价7.49元。</li>\n                <li><span>🔑重要信息：</span>品牌：霓峰；类型：小推车置物架；层数：3层；颜色：黑色；功能：多层储物，可移动；价格：7.49元。</li>\n                <li><span>💡实用价值：</span>适用于厨房、客厅等空间收纳，提高空间利用率，方便移动。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">19.原标题:松下 Panasonic 阿尔法alpha13kg家用洗衣机滚筒套装智能全自动P5HD+H5 35996元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928588/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928588/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>松下阿尔法alpha系列13kg家用滚筒洗衣机套装，型号为P5HD+H5，智能全自动，售价35996元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：松下阿尔法alpha P5HD+H5；类型：滚筒洗衣机套装；容量：13kg；功能：智能全自动；价格：35996元。</li>\n                <li><span>💡实用价值：</span>适合大家庭或有大件衣物洗涤需求的家庭，提供高端智能洗衣体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">20.原标题:松下 Panasonic 阿尔法alpha13kg家用洗衣机滚筒套装智能全自动P5HD+H5 35996元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928578/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928578/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>松下阿尔法alpha系列13kg家用滚筒洗衣机套装，型号为P5HD+H5，智能全自动，售价35996元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：松下阿尔法alpha P5HD+H5；类型：滚筒洗衣机套装；容量：13kg；功能：智能全自动；价格：35996元。</li>\n                <li><span>💡实用价值：</span>适合大家庭或有大件衣物洗涤需求的家庭，提供高端智能洗衣体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">21.原标题:维达 有芯卷纸 超韧4层140克*30卷 加厚升级 卫生纸厕纸 卷筒纸纸巾 32.71元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928571/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928571/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>维达超韧4层有芯卷纸，140克*30卷加厚升级装，售价32.71元。</li>\n                <li><span>🔑重要信息：</span>品牌：维达；类型：有芯卷纸；层数：4层；规格：140克*30卷；特点：超韧，加厚升级；价格：32.71元。</li>\n                <li><span>💡实用价值：</span>家庭日常消耗品，超韧加厚提升使用体验，适合囤货。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">22.原标题:松下 Panasonic 阿尔法alpha13kg家用洗衣机滚筒套装智能全自动P5HD+H5 35996元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928565/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928565/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>松下阿尔法alpha系列13kg家用滚筒洗衣机套装，型号为P5HD+H5，智能全自动，售价35996元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：松下阿尔法alpha P5HD+H5；类型：滚筒洗衣机套装；容量：13kg；功能：智能全自动；价格：35996元。</li>\n                <li><span>💡实用价值：</span>适合大家庭或有大件衣物洗涤需求的家庭，提供高端智能洗衣体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">23.原标题:阿尔法 Alpha 松下阿尔法alpha13kg家用洗衣机滚筒套装智能全自动P5HD+H5 31996元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928537/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928537/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>松下阿尔法alpha系列13kg家用滚筒洗衣机套装，型号为P5HD+H5，智能全自动，售价31996元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：松下阿尔法alpha P5HD+H5；类型：滚筒洗衣机套装；容量：13kg；功能：智能全自动；价格：31996元。</li>\n                <li><span>💡实用价值：</span>适合大家庭或有大件衣物洗涤需求的家庭，提供高端智能洗衣体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">24.原标题:阿尔法 Alpha 松下13kg家用洗衣机滚筒套装智能全自动旗舰店正P5+H5 31996元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928536/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928536/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>松下阿尔法alpha系列13kg家用滚筒洗衣机套装，型号为P5+H5，智能全自动，售价31996元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：松下阿尔法alpha P5+H5；类型：滚筒洗衣机套装；容量：13kg；功能：智能全自动；价格：31996元。</li>\n                <li><span>💡实用价值：</span>适合大家庭或有大件衣物洗涤需求的家庭，提供高端智能洗衣体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">25.原标题:阿尔法 Alpha 松下阿尔法alpha13kg家用洗衣机滚筒套装智能全自动P5HD+H5 31996元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928533/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928533/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>松下阿尔法alpha系列13kg家用滚筒洗衣机套装，型号为P5HD+H5，智能全自动，售价31996元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：松下阿尔法alpha P5HD+H5；类型：滚筒洗衣机套装；容量：13kg；功能：智能全自动；价格：31996元。</li>\n                <li><span>💡实用价值：</span>适合大家庭或有大件衣物洗涤需求的家庭，提供高端智能洗衣体验。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">26.原标题:百乐 PILOT BL-P50MW-B 白杆 金标系列 中性笔 单支装 3.87元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928721/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928721/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>百乐PILOT BL-P50MW-B金标系列中性笔，白杆单支装，售价3.87元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：百乐PILOT BL-P50MW-B；系列：金标系列；类型：中性笔；规格：单支装；价格：3.87元。</li>\n                <li><span>💡实用价值：</span>适合日常书写，百乐品牌书写流畅，是学习办公的实用文具。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">27.原标题:乐唯诗 高硼硅晶康煲 琥珀色 2.5L 7.9元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928441/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928441/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>乐唯诗高硼硅晶康煲，琥珀色，容量2.5升，券后价格7.9元。</li>\n                <li><span>🔑重要信息：</span>品牌：乐唯诗；材质：高硼硅晶；容量：2.5L；颜色：琥珀色；价格：7.9元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合家庭炖煮，高硼硅材质耐高温，购买前需领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">28.原标题:真维斯 UPF50+ 男士防紫外线防晒衣 19.9元（需用券）</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928376/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928376/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>真维斯男士防紫外线防晒衣，防晒指数UPF50+，券后价格19.9元。</li>\n                <li><span>🔑重要信息：</span>品牌：真维斯；类型：男士防晒衣；防晒指数：UPF50+；价格：19.9元（需用券）。</li>\n                <li><span>💡实用价值：</span>适合夏季户外活动穿着，有效防晒，性价比高，购买前需领取优惠券。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">29.原标题:元气森林 好自在 红豆薏米水 0糖500ml 红豆薏米4+红枣枸杞4 共8瓶 19.9元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928375/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928375/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>元气森林好自在红豆薏米水，0糖饮品，500ml装，包含4瓶红豆薏米和4瓶红枣枸杞，共8瓶，售价19.9元。</li>\n                <li><span>🔑重要信息：</span>品牌：元气森林好自在；口味：红豆薏米+红枣枸杞；特点：0糖；规格：500ml*8瓶；价格：19.9元。</li>\n                <li><span>💡实用价值：</span>适合注重健康的日常饮用，多口味组合，0糖更健康。</li>\n            </ul>\n        </div>\n    </div>\n|\n    <div class=\"container\">\n        <div class=\"header\">\n            <div class=\"title\">30.原标题:美诺 Miele 德国原装进口嵌入式双门冷藏冷冻冰箱KFNS 7795 D C 48900元</div>\n            <div class=\"author\">🖋️作者：undefined</div>\n            <div><a href=\"https://www.smzdm.com/p/151928362/\" class=\"link\">🔗链接：https://www.smzdm.com/p/151928362/</a></div>\n        </div>\n        <div class=\"content-section\">\n            <h3>📊内容分析:</h3>\n            <ul>\n                <li><span>📌核心内容：</span>美诺Miele德国原装进口嵌入式双门冷藏冷冻冰箱KFNS 7795 D C，售价48900元。</li>\n                <li><span>🔑重要信息：</span>品牌型号：美诺Miele KFNS 7795 D C；类型：德国原装进口嵌入式双门冷藏冷冻冰箱；价格：48900元。</li>\n                <li><span>💡实用价值：</span>适合追求高端品质和嵌入式设计的大户型家庭，购买前需确认厨房预留空间是否匹配。</li>\n            </ul>\n        </div>\n    </div>"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:每6小时候触发一次": {
+      "recurrenceRules": [
+        18
+      ]
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-06-30T05:07:18.000Z",
+  "versionId": "97e7b565-9194-4469-add4-1bace5719d75"
+}
