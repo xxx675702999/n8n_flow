@@ -1,0 +1,248 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "查询淘宝",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "查询京东",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "查询拼多多",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "查询淘宝": {
+      "main": [
+        [
+          {
+            "node": "比较价格",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "查询京东": {
+      "main": [
+        [
+          {
+            "node": "比较价格",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "查询拼多多": {
+      "main": [
+        [
+          {
+            "node": "比较价格",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "比较价格": {
+      "main": [
+        [
+          {
+            "node": "AI分析是否值得买",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI分析是否值得买": {
+      "main": [
+        [
+          {
+            "node": "格式化最终结果",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-03T11:51:38.012Z",
+  "id": "sb5Q2XsG4U4lpvqy",
+  "isArchived": true,
+  "meta": null,
+  "name": "商品最低价查询与AI分析",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "price-checker-webhook",
+        "options": {}
+      },
+      "name": "Trigger with Product Name",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "notes": "通过向这个Webhook发送POST请求来触发工作流。请求体应为JSON格式，例如：\n{\n  \"productName\": \"你想查询的商品\"\n}",
+      "id": "0814187c-9f44-4e22-ad22-db46eef4cac5"
+    },
+    {
+      "parameters": {
+        "url": "https://api.taobao.com/search?q={{ $json.body.productName }}",
+        "options": {},
+        "parseResponse": true,
+        "response": {
+          "response": {
+            "fullResponse": false
+          }
+        }
+      },
+      "name": "Search Taobao",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        500,
+        -100
+      ],
+      "notes": "这是一个占位符节点。请替换为真实的淘宝商品搜索API，并配置好权限认证。",
+      "id": "421d95cc-ac8c-443c-9cb7-3b22bbed68c8"
+    },
+    {
+      "parameters": {
+        "url": "https://api.jd.com/search?q={{ $json.body.productName }}",
+        "options": {},
+        "parseResponse": true,
+        "response": {
+          "response": {
+            "fullResponse": false
+          }
+        }
+      },
+      "name": "Search JD",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        500,
+        140
+      ],
+      "notes": "这是一个占位符节点。请替换为真实的京东商品搜索API，并配置好权限认证。",
+      "id": "9d54da7d-0afe-45bb-8f22-784df45368d2"
+    },
+    {
+      "parameters": {
+        "url": "https://api.pinduoduo.com/search?q={{ $json.body.productName }}",
+        "options": {},
+        "parseResponse": true,
+        "response": {
+          "response": {
+            "fullResponse": false
+          }
+        }
+      },
+      "name": "Search PDD",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        500,
+        380
+      ],
+      "notes": "这是一个占位符节点。请替换为真实的拼多多商品搜索API，并配置好权限认证。",
+      "id": "0a52fdbf-86ca-4e31-82cc-7de7396e4b6b"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 此代码假定每个上游节点都返回了带有价格和商品信息的JSON对象。\n// 您必须修改此代码，以解析您所使用的真实API返回的数据结构。\nconst results = [];\n\n// 示例解析逻辑 (您需要根据API的实际返回结果进行替换)\n// --- 重要：请在此处编写您的解析逻辑 ---\nconst taobaoItems = $items[0].json; // 来自 'Search Taobao' 节点的数据\nif (taobaoItems.results && taobaoItems.results.length > 0) {\n  results.push({ platform: 'Taobao', price: taobaoItems.results[0].price, productInfo: taobaoItems.results[0].title });\n}\n\nconst jdItems = $items[1].json; // 来自 'Search JD' 节点的数据\nif (jdItems.data && jdItems.data.length > 0) {\n  results.push({ platform: 'JD', price: jdItems.data[0].current_price, productInfo: jdItems.data[0].product_name });\n}\n\nconst pddItems = $items[2].json; // 来自 'Search PDD' 节点的数据\nif (pddItems.items && pddItems.items.length > 0) {\n  results.push({ platform: 'PDD', price: pddItems.items[0].price_yuan, productInfo: pddItems.items[0].name });\n}\n// --- 解析逻辑结束 ---\n\nif (results.length === 0) {\n  return [{ json: { error: '在任何平台上都未能找到该商品。' } }];\n}\n\n// 找出价格最低的商品\nconst lowestPriceItem = results.reduce((lowest, current) => {\n  return parseFloat(current.price) < parseFloat(lowest.price) ? current : lowest;\n});\n\nreturn [{ json: lowestPriceItem }];",
+        "mode": "runOnceForAllItems"
+      },
+      "name": "Find Lowest Price",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        820,
+        140
+      ],
+      "notes": "此代码节点会合并所有搜索结果，并找出价格最低的商品。您需要根据上游HTTP节点的实际返回数据，修改代码来正确解析价格和商品信息。",
+      "id": "0118a4a6-e7b9-4edf-99bb-87f6ba3131e3"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4-turbo",
+        "prompt": "你是一位购物助手。请根据以下信息，分析这件商品是否值得购买，并给出你的建议。\\n\\n商品名称：{{ $json.productInfo }}\\n最低价格：{{ $json.price }} 元\\n售卖平台：{{ $json.platform }}\\n\\n请从价格、商品本身等角度进行分析，并用简洁的语言给出结论和建议。"
+      },
+      "name": "AI Analysis",
+      "type": "n8n-nodes-base.openAiChat",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        140
+      ],
+      "notes": "这是一个占位符节点。它会将最低价商品信息发送给AI大模型进行分析。您需要在此配置您的AI模型凭证（例如OpenAI API Key）。",
+      "id": "e789dc6a-2b9d-4e05-bfc8-6e7ee9eacedb"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "product_name",
+              "value": "={{ $node[\"Find Lowest Price\"].json.productInfo }}"
+            },
+            {
+              "name": "lowest_price",
+              "value": "={{ $node[\"Find Lowest Price\"].json.price }}"
+            },
+            {
+              "name": "platform",
+              "value": "={{ $node[\"Find Lowest Price\"].json.platform }}"
+            },
+            {
+              "name": "ai_suggestion",
+              "value": "={{ $node[\"AI Analysis\"].json.choices[0].message.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Final Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1420,
+        140
+      ],
+      "id": "c1b94202-5463-4bc5-bbc2-302de90c8bfe"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-03T12:00:00.000Z",
+  "versionId": "593dae14-4c2b-41da-b0c3-53c2f729cffd"
+}
