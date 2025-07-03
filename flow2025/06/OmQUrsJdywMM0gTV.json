@@ -1,0 +1,1165 @@
+{
+  "active": false,
+  "connections": {
+    "调用 硅基流动 推理 API": {
+      "main": [
+        [
+          {
+            "node": "Get Meta BG",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "回复错误1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "调用 硅基流动 推理 API1": {
+      "main": [
+        [
+          {
+            "node": "Get Meta BG1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "回复错误",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seed值有无": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET请求": {
+      "main": [
+        [
+          {
+            "node": "有无logo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Meta BG": {
+      "main": [
+        [
+          {
+            "node": "Nest Bg Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nest Top Meta": {
+      "main": [
+        [
+          {
+            "node": "Rename Image Binary Top Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nest Bg Meta": {
+      "main": [
+        [
+          {
+            "node": "Rename Image Binary Background Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Center": {
+      "main": [
+        [
+          {
+            "node": "Let \"top\" overlay \"bg\"",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Logo for the Watermark": {
+      "main": [
+        [
+          {
+            "node": "Get Meta Top",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for both Images and merge Binary in one Item": {
+      "main": [
+        [
+          {
+            "node": "Calculate Center",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Image Binary Top Image": {
+      "main": [
+        [
+          {
+            "node": "Wait for both Images and merge Binary in one Item",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Rename Image Binary Background Image": {
+      "main": [
+        [
+          {
+            "node": "Wait for both Images and merge Binary in one Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Meta Top": {
+      "main": [
+        [
+          {
+            "node": "Nest Top Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "有无logo": {
+      "main": [
+        [
+          {
+            "node": "Seed值有无",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Seed值有无1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "调用 硅基流动 推理 API2": {
+      "main": [
+        [
+          {
+            "node": "成功响应2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "回复错误2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "调用 硅基流动 推理 API3": {
+      "main": [
+        [
+          {
+            "node": "成功响应3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "回复错误3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seed值有无1": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Let \"top\" overlay \"bg\"": {
+      "main": [
+        [
+          {
+            "node": "成功响应1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Meta BG1": {
+      "main": [
+        [
+          {
+            "node": "Nest Bg Meta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nest Top Meta1": {
+      "main": [
+        [
+          {
+            "node": "Rename Image Binary Top Image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nest Bg Meta1": {
+      "main": [
+        [
+          {
+            "node": "Rename Image Binary Background Image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Center1": {
+      "main": [
+        [
+          {
+            "node": "Let \"top\" overlay \"bg\"1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Logo for the Watermark1": {
+      "main": [
+        [
+          {
+            "node": "Get Meta Top1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for both Images and merge Binary in one Item1": {
+      "main": [
+        [
+          {
+            "node": "Calculate Center1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Image Binary Top Image1": {
+      "main": [
+        [
+          {
+            "node": "Wait for both Images and merge Binary in one Item1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Rename Image Binary Background Image1": {
+      "main": [
+        [
+          {
+            "node": "Wait for both Images and merge Binary in one Item1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Meta Top1": {
+      "main": [
+        [
+          {
+            "node": "Nest Top Meta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Let \"top\" overlay \"bg\"1": {
+      "main": [
+        [
+          {
+            "node": "成功响应",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "调用 硅基流动 推理 API3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "调用 硅基流动 推理 API2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "调用 硅基流动 推理 API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Logo for the Watermark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "调用 硅基流动 推理 API1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Logo for the Watermark1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-28T14:47:35.176Z",
+  "id": "OmQUrsJdywMM0gTV",
+  "isArchived": true,
+  "meta": null,
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ $json.output }}?width={{ $ifEmpty($('GET请求').item.json.query.width,1024) }}&height={{ $ifEmpty($('GET请求').item.json.query.height,1024) }}&seed={{ $('GET请求').item.json.query.seed }}&model=flux&nologo=true",
+        "options": {}
+      },
+      "id": "2800ca3a-8387-4c55-b88c-0fd112aa1ad5",
+      "name": "调用 硅基流动 推理 API",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        0,
+        0
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": false,
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "https://dubbing.yuychat.cn/error.gif",
+        "options": {}
+      },
+      "id": "eb51a574-680a-41e8-9fe2-be88a004d66d",
+      "name": "回复错误1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        140,
+        160
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://image.pollinations.ai/prompt/{{ $json.output }}?width={{ $ifEmpty($('GET请求').item.json.query.width,1024) }}&height={{ $ifEmpty($('GET请求').item.json.query.height,1024) }}&model=flux&nologo=true",
+        "options": {}
+      },
+      "id": "b47e1a93-7d15-4941-b265-02bc7248a11a",
+      "name": "调用 硅基流动 推理 API1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        80,
+        560
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": false,
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "https://dubbing.yuychat.cn/error.gif",
+        "options": {}
+      },
+      "id": "080a59ba-e707-4980-a8cf-fcc2573cf6be",
+      "name": "回复错误",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        280,
+        700
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "06e13542-cb9a-4a81-823e-07c913ba79f9",
+              "leftValue": "={{ $('GET请求').item.json.query.seed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -440,
+        480
+      ],
+      "id": "4e666d48-3c39-4fa9-9bde-b3b39bb088a8",
+      "name": "Seed值有无"
+    },
+    {
+      "parameters": {
+        "path": "draw",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0fb4c4c3-f21a-43ca-b783-7742002d198d",
+      "name": "GET请求",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -980,
+        500
+      ],
+      "webhookId": "a5a9106f-2389-4b29-8423-8c0d94717ed2"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "inputFieldName": "bg",
+        "options": {}
+      },
+      "id": "3d8d1480-1c20-4d59-8aed-93247b8efafc",
+      "name": "成功响应",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1980,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "inputFieldName": "bg",
+        "options": {}
+      },
+      "id": "44738efd-feff-4292-a78a-186742fc8a86",
+      "name": "成功响应1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "information"
+      },
+      "id": "46dfb1c5-1bac-41ca-9801-4116ca775976",
+      "name": "Get Meta BG",
+      "type": "n8n-nodes-base.editImage",
+      "position": [
+        460,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2fb3fd91-c13d-45ce-a7ec-612319a008fc",
+              "name": "metaTop",
+              "type": "object",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {
+          "includeBinary": true
+        }
+      },
+      "id": "fb5512f5-d08c-4524-a90a-8b187bb3a6ca",
+      "name": "Nest Top Meta",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        640,
+        260
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2fb3fd91-c13d-45ce-a7ec-612319a008fc",
+              "name": "metaBg",
+              "type": "object",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {
+          "includeBinary": true
+        }
+      },
+      "id": "3316b3fe-010d-46a5-9298-76ebabdf6d38",
+      "name": "Nest Bg Meta",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        640,
+        0
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "\n\n  const centerX = ($input.item.json.metaBg.size.width - $input.item.json.metaTop.size.width);\n  const centerY = ($input.item.json.metaBg.size.height - $input.item.json.metaTop.size.height);\n\n  $input.item.json.center = { x: centerX, y: centerY };\n\nreturn $input.item"
+      },
+      "id": "8fcb19b8-ce40-4393-9bcf-709e0f4cda77",
+      "name": "Calculate Center",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1440,
+        120
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "https://dubbing.yuychat.cn/dublogo.png",
+        "options": {}
+      },
+      "id": "9768aee1-d06b-4846-ba07-6eb7b7b31ab7",
+      "name": "Get Logo for the Watermark",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        260,
+        260
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "c93dd4aa-2076-4b41-ba8d-bf188fe6bc0b",
+      "name": "Wait for both Images and merge Binary in one Item",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1140,
+        120
+      ],
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.binary.top = $input.item.binary.data;\ndelete $input.item.binary.data;\nreturn $input.item;"
+      },
+      "id": "50742cde-856b-4ab3-bc36-f6a417829a5b",
+      "name": "Rename Image Binary Top Image",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        820,
+        260
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.binary.bg = $input.item.binary.data;\ndelete $input.item.binary.data;\nreturn $input.item;"
+      },
+      "id": "e73aaa4c-79c6-47ba-8af5-a08992376256",
+      "name": "Rename Image Binary Background Image",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        820,
+        0
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "information"
+      },
+      "id": "e322b3a6-6315-4e4e-9d98-6bc2ca47579b",
+      "name": "Get Meta Top",
+      "type": "n8n-nodes-base.editImage",
+      "position": [
+        460,
+        260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "composite",
+        "dataPropertyName": "bg",
+        "dataPropertyNameComposite": "top",
+        "operator": "Plus",
+        "positionX": "={{ $json.center.x }}",
+        "positionY": "={{ $json.center.y }}",
+        "options": {
+          "fileName": "out.png",
+          "format": "jpeg"
+        }
+      },
+      "id": "ae6539f3-5626-4fe8-8926-f165023502d0",
+      "name": "Let \"top\" overlay \"bg\"",
+      "type": "n8n-nodes-base.editImage",
+      "position": [
+        1760,
+        120
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "06e13542-cb9a-4a81-823e-07c913ba79f9",
+              "leftValue": "={{ $('GET请求').item.json.query.logo }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -760,
+        500
+      ],
+      "id": "c7e5df4d-52cc-45dc-9fcf-ac0dffdff57f",
+      "name": "有无logo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.siliconflow.cn/v1/images/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt_enhancement\": {{ $ifEmpty($('GET请求').item.json.query.aiprompt,true) }},\n  \"prompt\": \"{{ $json.output }}\",\n  \"image_size\": \"{{ $ifEmpty($('GET请求').item.json.query.width,1024) }}x{{ $ifEmpty($('GET请求').item.json.query.height,1024) }}\",\n  \"model\": \"Kwai-Kolors/Kolors\",\n  \"seed\": {{ $('GET请求').item.json.query.seed }}\n}",
+        "options": {}
+      },
+      "id": "67abaf79-1e82-48fe-bbb7-29ee5989b0a1",
+      "name": "调用 硅基流动 推理 API2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        140,
+        1080
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "vL4PuXmIFb5sE1K0",
+          "name": "Header Auth account"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "https://dubbing.yuychat.cn/error.gif",
+        "options": {}
+      },
+      "id": "ec3ed015-0d2e-4eea-8b2b-b87e3e4cbd3b",
+      "name": "回复错误2",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        360,
+        1220
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.siliconflow.cn/v1/images/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt_enhancement\": {{ $ifEmpty($('GET请求').item.json.query.aiprompt,true) }},\n  \"prompt\": \"{{ $json.output }}\",\n  \"image_size\": \"{{ $ifEmpty($('GET请求').item.json.query.width,1024) }}x{{ $ifEmpty($('GET请求').item.json.query.height,1024) }}\",\n  \"model\": \"Kwai-Kolors/Kolors\"\n}",
+        "options": {}
+      },
+      "id": "592e5628-39f2-40c8-a4b1-cb20cfc9852d",
+      "name": "调用 硅基流动 推理 API3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        160,
+        1500
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "vL4PuXmIFb5sE1K0",
+          "name": "Header Auth account"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "https://dubbing.yuychat.cn/error.gif",
+        "options": {}
+      },
+      "id": "2a5a9b2f-c6e7-4872-9440-7ea2efbf90ad",
+      "name": "回复错误3",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        380,
+        1640
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "06e13542-cb9a-4a81-823e-07c913ba79f9",
+              "leftValue": "={{ $('GET请求').item.json.query.seed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        1300
+      ],
+      "id": "1a613cde-9061-47bc-bf30-12a58db6cd2e",
+      "name": "Seed值有无1"
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "={{ $json.images[0].url }}",
+        "options": {}
+      },
+      "id": "394226f4-5968-43ff-8778-34e5e9d464c1",
+      "name": "成功响应2",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        360,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "={{ $json.images[0].url }}",
+        "options": {}
+      },
+      "id": "1ab7eb9b-aef4-4f14-94ee-fa6e7d3baf98",
+      "name": "成功响应3",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        1480
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "information"
+      },
+      "id": "0434d6da-b49e-414c-9db9-b0c1c3fca38e",
+      "name": "Get Meta BG1",
+      "type": "n8n-nodes-base.editImage",
+      "position": [
+        460,
+        580
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2fb3fd91-c13d-45ce-a7ec-612319a008fc",
+              "name": "metaTop",
+              "type": "object",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {
+          "includeBinary": true
+        }
+      },
+      "id": "7b7436ef-de1d-442d-bdde-e5260b7ffa9c",
+      "name": "Nest Top Meta1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        640,
+        840
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2fb3fd91-c13d-45ce-a7ec-612319a008fc",
+              "name": "metaBg",
+              "type": "object",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {
+          "includeBinary": true
+        }
+      },
+      "id": "8fa527f5-b127-4c7b-a024-145380785821",
+      "name": "Nest Bg Meta1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        640,
+        580
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "\n\n  const centerX = ($input.item.json.metaBg.size.width - $input.item.json.metaTop.size.width);\n  const centerY = ($input.item.json.metaBg.size.height - $input.item.json.metaTop.size.height);\n\n  $input.item.json.center = { x: centerX, y: centerY };\n\nreturn $input.item"
+      },
+      "id": "41539cd8-5d1e-4228-87af-5f9e87a5f9fb",
+      "name": "Calculate Center1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1440,
+        700
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "https://dubbing.yuychat.cn/dublogo.png",
+        "options": {}
+      },
+      "id": "e16cc113-aad8-4fd3-be47-4d6908f15ca9",
+      "name": "Get Logo for the Watermark1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        260,
+        840
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "61055b83-2075-4513-aaa4-bc6f69c8254c",
+      "name": "Wait for both Images and merge Binary in one Item1",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1140,
+        700
+      ],
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.binary.top = $input.item.binary.data;\ndelete $input.item.binary.data;\nreturn $input.item;"
+      },
+      "id": "04094ce8-073b-4353-b48c-dc654ae69612",
+      "name": "Rename Image Binary Top Image1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        820,
+        840
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.binary.bg = $input.item.binary.data;\ndelete $input.item.binary.data;\nreturn $input.item;"
+      },
+      "id": "4a1f859b-f4e3-42f6-a373-a0fdb290decf",
+      "name": "Rename Image Binary Background Image1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        820,
+        580
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "information"
+      },
+      "id": "f12c3539-cd83-4129-bea1-4b2ee2d132c3",
+      "name": "Get Meta Top1",
+      "type": "n8n-nodes-base.editImage",
+      "position": [
+        460,
+        840
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "composite",
+        "dataPropertyName": "bg",
+        "dataPropertyNameComposite": "top",
+        "operator": "Plus",
+        "positionX": "={{ $json.center.x }}",
+        "positionY": "={{ $json.center.y }}",
+        "options": {
+          "fileName": "out.png",
+          "format": "jpeg"
+        }
+      },
+      "id": "234bb90f-88af-4744-9678-208f63845b63",
+      "name": "Let \"top\" overlay \"bg\"1",
+      "type": "n8n-nodes-base.editImage",
+      "position": [
+        1760,
+        700
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $('GET请求').first().json.query.prompt.replace(/\\r?\\n/g, '\\\\n').replace(/\"/g, '\\\\\"');\n\n\n// 输出选中的API Key和修改后的文本\nreturn {\n  json: {\n    output\n  }\n};"
+      },
+      "id": "7826f397-7912-4d5a-b2cc-a01a74aff01c",
+      "name": "Code5",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -60,
+        1080
+      ],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $('GET请求').first().json.query.prompt.replace(/\\r?\\n/g, '\\\\n').replace(/\"/g, '\\\\\"');\n\n\n// 输出选中的API Key和修改后的文本\nreturn {\n  json: {\n    output\n  }\n};"
+      },
+      "id": "4d258276-1475-448d-b35d-1a5811b0c7ac",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        1500
+      ],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $('GET请求').first().json.query.prompt.replace(/\\r?\\n/g, '\\\\n').replace(/\"/g, '\\\\\"');\n\n\n// 输出选中的API Key和修改后的文本\nreturn {\n  json: {\n    output\n  }\n};"
+      },
+      "id": "ba7bfa4b-11d6-48db-bd1d-28876d73985e",
+      "name": "Code6",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        280
+      ],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $('GET请求').first().json.query.prompt.replace(/\\r?\\n/g, '\\\\n').replace(/\"/g, '\\\\\"');\n\n\n// 输出选中的API Key和修改后的文本\nreturn {\n  json: {\n    output\n  }\n};"
+      },
+      "id": "0f7c1008-9688-4808-aced-70541fd43d8f",
+      "name": "Code7",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        600
+      ],
+      "executeOnce": false
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-29T09:17:22.000Z",
+  "versionId": "7382afe9-9bd5-488b-9fe9-9c782ea2c7ae"
+}
