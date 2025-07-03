@@ -1,0 +1,107 @@
+{
+  "active": false,
+  "connections": {
+    "RSS订阅器→AI处理器": {
+      "source": [
+        0
+      ],
+      "target": [
+        1
+      ]
+    },
+    "AI处理器→Notion集成器": {
+      "source": [
+        1
+      ],
+      "target": [
+        2
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T15:54:36.607Z",
+  "id": "o15rp8oTAPI5woTG",
+  "isArchived": true,
+  "meta": null,
+  "name": "RSS-AI-Notion自动化流程",
+  "nodes": [
+    {
+      "name": "RSS订阅器",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "parameters": {
+        "url": "需替换为实际RSS链接",
+        "options": {
+          "useDontUpdate": true
+        }
+      },
+      "id": "45388ab5-b1de-4132-833e-7e49b3c233b4"
+    },
+    {
+      "name": "AI内容处理器",
+      "type": "n8n-nodes-base.openAi",
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-3.5-turbo",
+        "messages": [
+          {
+            "role": "system",
+            "content": "请将RSS内容精炼成: 1)标题 2)150字摘要 3)3个关键词 4)重要性评分(1-5)"
+          }
+        ]
+      },
+      "id": "85d977d1-f0bc-4c8f-b4f6-23690902a141"
+    },
+    {
+      "name": "Notion集成器",
+      "type": "n8n-nodes-base.notion",
+      "parameters": {
+        "resource": "database",
+        "operation": "append",
+        "databaseId": "需替换为Notion数据库ID",
+        "properties": {
+          "标题": {
+            "title": [
+              {
+                "text": {
+                  "content": "{{$json.title}}"
+                }
+              }
+            ]
+          },
+          "摘要": {
+            "rich_text": [
+              {
+                "text": {
+                  "content": "{{$json.summary}}"
+                }
+              }
+            ]
+          },
+          "关键词": {
+            "multi_select": "{{$json.keywords}}"
+          },
+          "重要性": {
+            "number": "{{$json.importance}}"
+          }
+        }
+      },
+      "id": "96ce23c3-4229-4914-849d-327d3337dc7c"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T16:07:04.000Z",
+  "versionId": "2b56985d-43ab-4268-837b-2549a3731f60"
+}
