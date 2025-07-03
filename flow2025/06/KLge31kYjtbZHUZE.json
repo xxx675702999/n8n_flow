@@ -1,0 +1,983 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        []
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "调用 硅基流动 推理 API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "3D风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "手写风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "极简风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "赛博朋克风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "复古风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "霓虹风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "扁平风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "涂鸦风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "自然风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "像素风格",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "书法风格",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3D风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "手写风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "极简风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "赛博朋克风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "复古风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "霓虹风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "扁平风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "涂鸦风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "自然风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "像素风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "书法风格": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "调用 硅基流动 推理 API1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-06-30T03:23:07.097Z",
+  "id": "KLge31kYjtbZHUZE",
+  "isArchived": true,
+  "meta": null,
+  "name": "Webhook 海报生成器",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "poster-generator",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        -380,
+        1080
+      ],
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-1e2f3a4b5c6d"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $json.text }}",
+        "options": {
+          "quality": "high",
+          "size": "1024x1536"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        900,
+        1560
+      ],
+      "id": "7c7e0c6d-c002-42d3-a6bf-c76f48cb229a",
+      "name": "OpenAI",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=主标题：{{ $json.body['主标题'] }}\n副标题：{{ $json.body['副标题'] }}\n辅助信息：{{ $json.body['辅助信息'] }}\n风格要求： {{ $json.data[0].Prompt }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "# Role\n你是一个文案视觉转化助手，专注于将结构化的文案（主标题、副标题、辅助信息）转化为适合生成海报图像的中文Prompt。\n\n## Skills\n### Skill 1: 整合文案内容\n- 将用户提供的文案内容（包括：主标题、副标题、辅助信息）整合成一段完整的图像场景描述。\n- 确保风格连贯、自然，具备画面感。\n- 可适当补充背景、构图、氛围、人物或道具细节，以增强视觉效果。\n\n### Skill 2: 保持核心信息\n- 保持文案的核心信息不变，同时优化语言节奏与情绪表达，使其更具吸引力与视觉指导性。\n- 输出为一段自然流畅的描述，不分行、不列点、不重复原文。\n\n### Skill 3: 其他要求\n- 如信息中含有风格、色调、构图等要求，应将其融合进整体语句中体现出来，确保每个细节都在最终的图像场景描述中得以体现。"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        500,
+        1080
+      ],
+      "id": "ec7a7de7-2e2b-4f8d-864d-923d202a2c49",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "3D风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b98714f9-8e5d-4330-be71-6c02984f1e8d"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "93a8ca57-f93e-4d93-9056-ab0f61e8f2cf",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "手写风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "463f0f87-8190-4320-ae5b-0c28971ef1cb",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "极简风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "affccdb4-65ea-4eb0-8c35-6ccb1edf2a59",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "赛博朋克风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0cfbdd8a-9a5c-442c-be19-76e81da2ba51",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "复古风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "47f69a08-4fa1-4420-bdb2-04febb894f6a",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "霓虹风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "23f83f39-da5b-46b1-a434-11e0c1bfffc0",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "扁平风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7bfd938d-900d-494e-b04c-ba547c7cd553",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "涂鸦风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a31c8888-cc7d-4586-b750-2e0ee1b2aa80",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "自然风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cc1c37f2-3981-4623-b42a-679cfe8d25ed",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "像素风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "249b68ac-72dd-4ed7-a880-3844bc2bd166",
+                    "leftValue": "={{ $json.body['海报风格'] }}",
+                    "rightValue": "书法风格",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -160,
+        900
+      ],
+      "id": "2cdc6771-c879-4926-a184-96d6b6df2508",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        280,
+        1080
+      ],
+      "id": "a0909812-68fd-42b0-8c73-d16f447e2b36",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=undefined",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        1080
+      ],
+      "id": "c9c02ef0-75b5-46fe-b86e-23a770ad5958",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b00580d7-7b2b-4fea-9cc2-3b02c4170a45",
+              "name": "Prompt",
+              "value": "3D text, realistic lighting, isometric perspective, metallic and glossy texture, shadows and reflections",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        80
+      ],
+      "id": "9516d3ce-df86-4b70-85f8-6132a4151e7e",
+      "name": "3D风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "hand-drawn lettering, sketch style, pastel colors, pencil texture, childlike, artistic",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        280
+      ],
+      "id": "e1cf187c-cd13-4df7-8ff8-cfd9ed172fa0",
+      "name": "手写风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "minimalist text poster, clean typography, monochrome, white background, elegant, modern layout",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        480
+      ],
+      "id": "dce5c6c8-3ec4-4419-a6d9-751f321847e6",
+      "name": "极简风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "cyberpunk style, neon text, futuristic city background, glowing letters, high contrast, purple and blue",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        880
+      ],
+      "id": "5988cb72-fca0-4fe9-890c-cf9b2b75b76e",
+      "name": "赛博朋克风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "vintage poster, retro text, old paper texture, grainy, warm faded tones, classic design",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        1280
+      ],
+      "id": "c5f0b07d-faca-4fc5-a2bb-7edafad28475",
+      "name": "复古风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "neon text, dark background, glowing outline, electric colors, light tubes effect",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        1680
+      ],
+      "id": "6f41a458-5efb-4eb8-bd84-1c5b924e99a3",
+      "name": "霓虹风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "flat design poster, bold solid colors, simple shapes, clean typography, modern look",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        2080
+      ],
+      "id": "94efc019-e02b-4270-a1ba-8df4d709404b",
+      "name": "扁平风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "graffiti text, urban wall background, spray paint texture, street art style, bold and wild",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        680
+      ],
+      "id": "3cff04ea-6e89-4322-a59a-8044b1eee6f8",
+      "name": "涂鸦风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "organic nature-themed text, leaves and flowers integrated, wooden texture, eco-friendly colors",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        1080
+      ],
+      "id": "fe8b445f-e0b0-4e5c-a853-29611f951a70",
+      "name": "自然风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "pixel art text, 8-bit style, retro game UI, colorful blocky letters, old computer feel",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        1480
+      ],
+      "id": "2294d530-5119-461a-89c3-e67103167481",
+      "name": "像素风格"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "880c0666-86e2-492c-8f5a-b2cfedb44e35",
+              "name": "Prompt",
+              "value": "chinese calligraphy, ink brush style, elegant strokes, paper texture background, traditional art",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        1880
+      ],
+      "id": "028bd1c1-4b2f-4579-8e17-da1ae57e3f5a",
+      "name": "书法风格"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        600,
+        1300
+      ],
+      "id": "0041d7ee-671c-43f2-8a93-9db11c37613b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DGTbpnd2WNVix3Be",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ $json.text }}?width=1024&height=1024&model=flux&nologo=true",
+        "options": {}
+      },
+      "id": "f7df6c86-814c-42b8-ada0-4d28bfec38c5",
+      "name": "调用 硅基流动 推理 API1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        880,
+        800
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": false,
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "command": "mv /home/node/generateImage/* /home/node/.n8n/generateImage/"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        1280
+      ],
+      "id": "e4440136-eb6e-459f-a555-b0aa336ba5ae",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "respondWith": "html",
+        "responseBody": "<h1>这是您生成的海报：</h1><img src=\"data:{{ $('调用 硅基流动 推理 API1').binary.data.mimeType }};base64,{{ $('调用 硅基流动 推理 API1').binary.data.toBase64() }}\" alt=\"生成的海报\">",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1380,
+        800
+      ],
+      "id": "42afdb2e-2581-47a8-8cc4-40774ff11c64",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-30T04:38:07.000Z",
+  "versionId": "fc1c78cc-5acb-4b05-8535-c5be5dec7ce4"
+}
