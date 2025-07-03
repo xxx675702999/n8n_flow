@@ -1,0 +1,107 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule": {
+      "main": [
+        [
+          {
+            "node": "Generate Meal Plan",
+            "type": "main"
+          }
+        ]
+      ]
+    },
+    "Generate Meal Plan": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main"
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-30T03:06:26.264Z",
+  "id": "3IRVyCmwAvNdhqSr",
+  "isArchived": true,
+  "meta": null,
+  "name": "Daily Meal Recommendation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "mode": "cron",
+          "cronTime": "0 8 * * *"
+        }
+      },
+      "name": "Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        800,
+        300
+      ],
+      "id": "6b22e8d5-880c-4659-8b6e-afd5d493e1cf"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "请根据今天的实际情况，为我推荐今天的一日三餐。请考虑营养均衡和多样性。",
+        "outputType": "string"
+      },
+      "name": "Generate Meal Plan",
+      "type": "n8n-nodes-base.openAiChat",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_WITH_YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI account"
+        }
+      },
+      "id": "85a18189-11dd-4b15-a218-94bfa702534e"
+    },
+    {
+      "parameters": {
+        "to": "YOUR_EMAIL@example.com",
+        "subject": "您好，这是您今日的三餐推荐 - {{ new Date().toLocaleDateString() }}",
+        "text": "你好！\n\n这是为你准备的今日三餐建议：\n\n{{$node[\"Generate Meal Plan\"].json[\"text\"]}}\n\n祝你用餐愉快！"
+      },
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "z2LApZC6RxR7AdEb",
+          "name": "SMTP account"
+        }
+      },
+      "id": "d645c5bb-f7cd-4715-84a5-1aba791a00ab"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-30T03:08:52.000Z",
+  "versionId": "de1bdaf5-3898-4f62-aa11-0d4c6a0734e5"
+}
