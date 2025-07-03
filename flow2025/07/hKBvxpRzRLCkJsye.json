@@ -1,0 +1,113 @@
+{
+  "active": false,
+  "connections": {
+    "Read RSS Feed": {
+      "main": [
+        [
+          {
+            "node": "AI Summarizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Summarizer": {
+      "main": [
+        [
+          {
+            "node": "Publish to Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T16:13:39.182Z",
+  "id": "hKBvxpRzRLCkJsye",
+  "isArchived": true,
+  "meta": null,
+  "name": "RSS-AI摘要-Notion发布流",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "在此处替换为您的RSS订阅链接"
+      },
+      "name": "Read RSS Feed",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        800,
+        300
+      ],
+      "id": "b4199c07-60f3-42b3-b8c9-821e714d084b"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4-turbo",
+        "prompt": "请你帮我将下面的文章内容整理成一段200字左右的摘要，并提取3-5个核心关键词。\n\n---\n文章标题：{{ $json.title }}\n文章内容：\n{{ $json.contentSnippet }}"
+      },
+      "name": "AI Summarizer",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        300
+      ],
+      "id": "e2edf6ef-3d47-4daf-9c4c-ad9b63da7ea6"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": "在此处替换为您Notion数据库的ID",
+        "properties": {
+          "properties": [
+            {
+              "name": "Name",
+              "type": "title",
+              "value": "={{ $node[\"Read RSS Feed\"].json[\"title\"] }}"
+            },
+            {
+              "name": "URL",
+              "type": "url",
+              "value": "={{ $node[\"Read RSS Feed\"].json[\"link\"] }}"
+            },
+            {
+              "name": "Summary",
+              "type": "rich_text",
+              "value": "={{ $node[\"AI Summarizer\"].json.choices[0].message.content }}"
+            }
+          ]
+        }
+      },
+      "name": "Publish to Notion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        300
+      ],
+      "id": "306392d5-e082-466c-ac20-f6f0049ac4b5"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T16:24:00.000Z",
+  "versionId": "4c8cb7fc-c9ad-4e99-b219-89b5e55084e5"
+}
