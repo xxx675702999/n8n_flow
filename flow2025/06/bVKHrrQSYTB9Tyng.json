@@ -1,0 +1,358 @@
+{
+  "active": false,
+  "connections": {
+    "Local File Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "获取被监控目录的完整路径",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "区分标题和内容",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "读取二进制文档": {
+      "main": [
+        [
+          {
+            "node": "解析文档内容",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "解析文档内容": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "区分标题和内容": {
+      "main": [
+        [
+          {
+            "node": "参数映射",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "参数映射": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "获取被监控目录的完整路径": {
+      "main": [
+        [
+          {
+            "node": "读取二进制文档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-28T16:36:47.116Z",
+  "id": "bVKHrrQSYTB9Tyng",
+  "isArchived": true,
+  "meta": null,
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerOn": "folder",
+        "path": "/data/xhs/",
+        "events": [
+          "add",
+          "change",
+          "unlink",
+          "addDir",
+          "unlinkDir"
+        ],
+        "options": {
+          "ignoreInitial": true,
+          "usePolling": true
+        }
+      },
+      "type": "n8n-nodes-base.localFileTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e8d68fdb-2cc6-481c-8f7e-442ed4d9d544",
+      "name": "Local File Trigger"
+    },
+    {
+      "parameters": {
+        "command": "=ls  {{ $json.path }}"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        180,
+        0
+      ],
+      "id": "8a804bff-48cf-4aad-bf70-4946d22c8492",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "= {{ $json.content }}",
+        "options": {
+          "systemMessage": "你是一名资深小红书内容创作者，擅长打造高互动爆文。请将用户提供的内容转化为爆款小红书风格，语言亲切又去，善用Emoji和标签，突出亮点，吸引用户互动。\n输出要求：\n1.标题限字20。\n2.区分标题和内容。\n3.精简内容要点，每个要点10字以内。\n4.要点内容用一句话概述。\n5.增加实用建议或个人感受。\n6.使用markdown语法进行文档排版\n7.只返回markdown格式内容，不允许额外的说明。"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        920,
+        0
+      ],
+      "id": "c25e0095-04c5-4f53-8d86-abe99b0757e7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.text_files }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        540,
+        0
+      ],
+      "id": "c3802c45-0338-4c62-8a37-f44cbbe3b7d3",
+      "name": "读取二进制文档"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nitems.forEach(item => {\n  let content = null;\n  let success = false;\n  \n  if (item.binary && item.binary.data && item.binary.data.data) {\n    try {\n      const buffer = Buffer.from(item.binary.data.data, 'base64');\n      content = buffer.toString('utf8');\n      success = true;\n    } catch (error) {\n      console.log('解析错误:', error.message);\n    }\n  }\n  \n  results.push({\n    content: content,\n    success: success,\n    original_data: item.json\n  });\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "id": "4bbb5aaa-17df-4a82-b8c7-3b9164124fc1",
+      "name": "解析文档内容"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取输入数据\nconst inputData = $input.all();\nconst results = [];\n\ninputData.forEach(item => {\n  const data = item.json;\n  \n  // 处理数组或单个对象\n  let outputArray = Array.isArray(data) ? data : [data];\n  \n  outputArray.forEach(outputItem => {\n    // 获取markdown内容\n    let markdownContent = outputItem.output || outputItem;\n    \n    // 清理markdown代码块标记\n    markdownContent = markdownContent.replace(/^```markdown\\n?/, '').replace(/\\n?```$/, '');\n    \n    // 按行分割\n    const lines = markdownContent.split('\\n');\n    \n    // 提取标题和内容\n    let title = '';\n    let content = '';\n    \n    lines.forEach(line => {\n      const trimmedLine = line.trim();\n      \n      // 提取主标题 (第一个 # 开头的)\n      if (trimmedLine.startsWith('# ') && !title) {\n        title = trimmedLine.substring(2).trim();\n      }\n      // 其他所有内容作为正文（去除markdown格式）\n      else if (trimmedLine) {\n        // 简单去除markdown格式\n        const cleanLine = trimmedLine\n          .replace(/^#{1,6}\\s+/, '')      // 去除标题标记\n          .replace(/\\*\\*([^*]+)\\*\\*/g, '$1')  // 去除加粗\n          .replace(/^\\-\\s+/, '')          // 去除列表标记\n          .replace(/^\\d+\\.\\s+/, '');      // 去除数字列表\n        \n        if (cleanLine) {\n          content += (content ? ' ' : '') + cleanLine;\n        }\n      }\n    });\n    \n    results.push({\n      title: title,\n      content: content,\n    });\n  });\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        0
+      ],
+      "id": "69a7c1ad-3d37-40d2-8477-28b455c4606a",
+      "name": "区分标题和内容"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc046714-e6fa-4bd4-b08b-7e1d3e1b1c63",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "eef09d99-2353-4d03-92af-cc15fb0eecea",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "a7196f19-db93-4e0b-98d7-0ec3edcaa818",
+              "name": "image_files",
+              "value": "={{ $('获取被监控目录的完整路径').item.json.image_files }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        0
+      ],
+      "id": "03a3d99a-cf0e-4c58-8ce8-17898d63bb1d",
+      "name": "参数映射"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=调用小红书工具帮我发布一则图文笔记，标题： {{ $json.title }}，内容：{{ $json.content }}，图片路径：{{ $json.image_files }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1660,
+        0
+      ],
+      "id": "3aee73d7-eb35-4664-9d36-996932ad1cce",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        200
+      ],
+      "id": "e83b8eb7-8ae5-48a6-b0ec-2111072b82c5",
+      "name": "DeepSeek Chat Model1"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "http://192.168.8.235:8000/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        220
+      ],
+      "id": "fb390b11-d021-41f6-b8eb-7511fb0d6691",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 获取前两个节点的输出数据\nconst dirMonitorOutput = $(\"Local File Trigger\").first().json.path; // 监控目录变更节点的输出\nconst execCommandOutput = $input.first().json.stdout; // Exec Command节点的输出\n\nconst basePath = dirMonitorOutput; // 例如: \"/data/xhs/20250618\"\nconst fileListString = execCommandOutput; // 文件名列表字符串\n\nconst textFiles = []; // 存储文本文件路径\nconst imageFiles = []; // 存储图片文件路径\n\n// 定义常见的图片文件扩展名列表（可以根据需要调整）\nconst imageExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.svg'];\n\n// 图片文件路径前缀\nconst imagePathPrefix = '/root/n8n-i18n-chinese';\n\nif (fileListString && typeof fileListString === 'string') {\n  const filenames = fileListString.trim().split('\\n');\n\n  for (const filename of filenames) {\n    const trimmedFilename = filename.trim();\n    if (trimmedFilename === '') {\n      continue; // 跳过空行（如果存在）\n    }\n\n    // 构建完整的文件路径\n    // 确保 basePath 和 filename 正确拼接，避免双斜杠或无斜杠\n    let fullPath = basePath;\n    if (!basePath.endsWith('/')) {\n      fullPath += '/';\n    }\n    fullPath += trimmedFilename;\n\n    const lowerFilename = trimmedFilename.toLowerCase();\n\n    // 判断文件类型并添加到对应数组\n    if (lowerFilename.endsWith('.txt')) {\n      textFiles.push(fullPath);\n    } else if (imageExtensions.some(ext => lowerFilename.endsWith(ext))) {\n      // 为图片文件添加前缀\n      const imageFullPath = imagePathPrefix + fullPath;\n      imageFiles.push(imageFullPath);\n    }\n    // 如果需要，可以在这里添加更多文件类型的判断逻辑\n  }\n}\n\n// 返回字符串格式的结果\nreturn {\n  text_files: textFiles.join(','),\n  image_files: imageFiles.join(',')\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        0
+      ],
+      "id": "fcf6c7d8-7efb-4f34-a978-b5be9db482b3",
+      "name": "获取被监控目录的完整路径"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        260
+      ],
+      "id": "42cf7653-b602-4e58-ba96-d16c16621bb2",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DGTbpnd2WNVix3Be",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Local File Trigger": [
+      {
+        "json": {
+          "event": "addDir",
+          "path": "/data/xhs/20250618"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-29T09:16:17.000Z",
+  "versionId": "cdf1e6ea-442a-41d2-8750-aa32cd7e41f6"
+}
