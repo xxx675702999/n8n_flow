@@ -1,0 +1,93 @@
+{
+  "active": false,
+  "connections": {
+    "RSS触发器": {
+      "main": [
+        [
+          {
+            "node": "AI处理器",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI处理器": {
+      "main": [
+        [
+          {
+            "node": "Notion写入",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T15:59:17.640Z",
+  "id": "QpUsyVR1LrUp3M12",
+  "isArchived": true,
+  "meta": null,
+  "name": "RSS-AI-Notion自动化流程",
+  "nodes": [
+    {
+      "name": "RSS触发器",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "parameters": {
+        "url": "用户提供的RSS链接",
+        "interval": "hourly"
+      },
+      "id": "b7cd81c1-0655-45e7-9a39-ebfae2b39402"
+    },
+    {
+      "name": "AI处理器",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        550,
+        300
+      ],
+      "parameters": {
+        "operation": "complete",
+        "model": "gpt-3.5-turbo",
+        "prompt": "请整理摘要：{{$json['content']}}"
+      },
+      "id": "4d036084-1c19-4ee0-bec2-3476d11389e7"
+    },
+    {
+      "name": "Notion写入",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        850,
+        300
+      ],
+      "parameters": {
+        "resource": "database",
+        "operation": "append",
+        "databaseId": "用户Notion数据库ID"
+      },
+      "id": "8376c3e5-bc8f-48c6-ba85-4b491a5da1f5"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T16:11:38.000Z",
+  "versionId": "de35cbcb-91f4-49e7-bfb2-92f041a5c824"
+}
