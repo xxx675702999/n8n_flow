@@ -463,15 +463,15 @@
         "resource": "file",
         "owner": {
           "__rl": true,
-          "mode": "",
-          "value": "={{ $('Config').first().item.repo_owner }}"
+          "value": "={{ $('Config').item.json.repo_owner }}",
+          "mode": ""
         },
         "repository": {
           "__rl": true,
-          "mode": "",
-          "value": "={{ $('Config').first().item.repo_name }}"
+          "value": "={{ $('Config').item.json.repo_name }}",
+          "mode": ""
         },
-        "filePath": "={{ $('Config').first().item.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
+        "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
         "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
       },
@@ -723,7 +723,133 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "createdAt": "2025-07-01T15:21:48.191Z",
+          "updatedAt": "2025-07-01T15:34:21.000Z",
+          "id": "0pYx2TzVqCPMQI0E",
+          "name": "RSS to Notion via AI",
+          "active": false,
+          "isArchived": true,
+          "nodes": [
+            {
+              "name": "RSS Feed Reader",
+              "type": "n8n-nodes-base.rssFeedRead",
+              "typeVersion": 1,
+              "position": [
+                250,
+                400
+              ],
+              "parameters": {
+                "url": "={{ $parameter.rssUrl }}"
+              },
+              "id": "f1e9e7bd-9f77-4ce0-b0ee-8d14deeffe7c"
+            },
+            {
+              "name": "AI Processor",
+              "type": "n8n-nodes-base.openAi",
+              "typeVersion": 1,
+              "position": [
+                600,
+                400
+              ],
+              "parameters": {
+                "resource": "chat",
+                "model": "gpt-3.5-turbo",
+                "temperature": 0.7,
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "Summarize the key points from this article in 3 bullet points in Chinese."
+                  },
+                  {
+                    "role": "user",
+                    "content": "Article content:\n\n{{ $json.description }}"
+                  }
+                ]
+              },
+              "credentials": {
+                "openAiApi": "={{ $credentials.openAi }}"
+              },
+              "id": "388e83ac-425d-466d-aea8-424959e4584c"
+            },
+            {
+              "name": "Notion Create Page",
+              "type": "n8n-nodes-base.notion",
+              "typeVersion": 1,
+              "position": [
+                950,
+                400
+              ],
+              "parameters": {
+                "resource": "databasePage",
+                "operation": "create",
+                "databaseId": "={{ $parameter.notionDatabaseId }}",
+                "properties": {
+                  "title": {
+                    "title": [
+                      {
+                        "text": {
+                          "content": "{{ $json.title }}"
+                        }
+                      }
+                    ]
+                  },
+                  "Summary": {
+                    "rich_text": [
+                      {
+                        "text": {
+                          "content": "{{ $json.messages.0.content }}"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "credentials": {
+                "notionApi": "={{ $credentials.notion }}"
+              },
+              "id": "c97bf72c-459a-4084-924a-a0d98084a168"
+            }
+          ],
+          "connections": {
+            "RSS Feed Reader": {
+              "main": [
+                {
+                  "node": "AI Processor",
+                  "type": "main"
+                }
+              ]
+            },
+            "AI Processor": {
+              "main": [
+                {
+                  "node": "Notion Create Page",
+                  "type": "main"
+                }
+              ]
+            }
+          },
+          "settings": {
+            "saveExecutionProgress": true,
+            "saveManualExecutions": true,
+            "saveDataErrorExecution": "all",
+            "saveDataSuccessExecution": "all",
+            "executionTimeout": 3600,
+            "timezone": "UTC"
+          },
+          "staticData": null,
+          "meta": null,
+          "pinData": null,
+          "versionId": "b5ac2480-2cb7-4f4c-8e63-6a3b52ae8496",
+          "triggerCount": 0,
+          "tags": []
+        }
+      }
+    ]
+  },
   "repo_name": "n8n_flow",
   "repo_owner": "xxx675702999",
   "repo_path": "flow",
@@ -733,6 +859,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-07-03T16:49:12.000Z",
-  "versionId": "edcd0597-ebb3-4543-8648-bf2af2ff3b4a"
+  "updatedAt": "2025-07-03T16:51:54.000Z",
+  "versionId": "6bfbb04c-9184-4f3d-bf50-ed31f7fc87fb"
 }
