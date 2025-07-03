@@ -1,0 +1,124 @@
+{
+  "active": false,
+  "connections": {
+    "RSS Feed Reader": {
+      "main": [
+        {
+          "node": "AI Processor",
+          "type": "main"
+        }
+      ]
+    },
+    "AI Processor": {
+      "main": [
+        {
+          "node": "Notion Create Page",
+          "type": "main"
+        }
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T15:21:48.191Z",
+  "id": "0pYx2TzVqCPMQI0E",
+  "isArchived": true,
+  "meta": null,
+  "name": "RSS to Notion via AI",
+  "nodes": [
+    {
+      "name": "RSS Feed Reader",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        250,
+        400
+      ],
+      "parameters": {
+        "url": "={{ $parameter.rssUrl }}"
+      },
+      "id": "f1e9e7bd-9f77-4ce0-b0ee-8d14deeffe7c"
+    },
+    {
+      "name": "AI Processor",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        600,
+        400
+      ],
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.7,
+        "messages": [
+          {
+            "role": "system",
+            "content": "Summarize the key points from this article in 3 bullet points in Chinese."
+          },
+          {
+            "role": "user",
+            "content": "Article content:\n\n{{ $json.description }}"
+          }
+        ]
+      },
+      "credentials": {
+        "openAiApi": "={{ $credentials.openAi }}"
+      },
+      "id": "388e83ac-425d-466d-aea8-424959e4584c"
+    },
+    {
+      "name": "Notion Create Page",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 1,
+      "position": [
+        950,
+        400
+      ],
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": "={{ $parameter.notionDatabaseId }}",
+        "properties": {
+          "title": {
+            "title": [
+              {
+                "text": {
+                  "content": "{{ $json.title }}"
+                }
+              }
+            ]
+          },
+          "Summary": {
+            "rich_text": [
+              {
+                "text": {
+                  "content": "{{ $json.messages.0.content }}"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "notionApi": "={{ $credentials.notion }}"
+      },
+      "id": "c97bf72c-459a-4084-924a-a0d98084a168"
+    }
+  ],
+  "pinData": null,
+  "repo_name": "n8n_flow",
+  "repo_owner": "xxx675702999",
+  "repo_path": "flow",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T15:34:21.000Z",
+  "versionId": "b5ac2480-2cb7-4f4c-8e63-6a3b52ae8496"
+}
