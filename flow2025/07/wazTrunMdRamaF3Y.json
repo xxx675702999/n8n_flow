@@ -185,7 +185,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "rss to notion",
+  "name": "rss to notion(active)",
   "nodes": [
     {
       "parameters": {
@@ -631,6 +631,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-03T11:37:26.000Z",
-  "versionId": "51c7624a-9e66-44f0-9446-0103a064832d"
+  "updatedAt": "2025-07-03T17:06:27.000Z",
+  "versionId": "4e227132-7700-4d92-ac9a-ee39b77483fe"
 }
