@@ -130,7 +130,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "HTML Image Upload and Replace",
+  "name": "HTML Image Upload and Replace(active)",
   "nodes": [
     {
       "parameters": {},
@@ -411,6 +411,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-03T15:28:55.000Z",
-  "versionId": "c870ae93-2b53-427e-93ae-24350afbe0f2"
+  "updatedAt": "2025-07-04T01:22:12.000Z",
+  "versionId": "fb8671c9-cc52-4560-8094-a753dedacfd2"
 }
