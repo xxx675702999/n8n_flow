@@ -493,13 +493,19 @@
     {
       "parameters": {
         "url": "={{$json.src}}",
-        "options": {}
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
       },
       "name": "HTTP Request2",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        1030,
+        1040,
         -1160
       ],
       "id": "63a66bef-3e6b-48f6-a51e-92972240ea15"
@@ -631,6 +637,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-03T17:06:27.000Z",
-  "versionId": "4e227132-7700-4d92-ac9a-ee39b77483fe"
+  "updatedAt": "2025-07-04T15:47:44.000Z",
+  "versionId": "095561e8-f573-4f18-892b-196587b0f1be"
 }
