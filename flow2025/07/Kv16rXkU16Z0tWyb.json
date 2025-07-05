@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Config": {
       "main": [
@@ -121,7 +121,13 @@
     },
     "Loop Over Items": {
       "main": [
-        [],
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Execute Workflow",
@@ -251,7 +257,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "Upload Workflows To Github",
+  "name": "Upload Workflows To Github(active)",
   "nodes": [
     {
       "parameters": {},
@@ -721,6 +727,30 @@
           "name": "n8n account"
         }
       }
+    },
+    {
+      "parameters": {
+        "fromEmail": "xxx675702999@163.com",
+        "toEmail": "675702999@qq.com",
+        "subject": "n8n workflow",
+        "html": "n8n workflow sync to github success",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        760,
+        -260
+      ],
+      "id": "325f1ffa-cc9f-49da-91b6-dd2a7780db7b",
+      "name": "Send email",
+      "webhookId": "72121987-437e-48ec-b697-d189f8dfbbd1",
+      "credentials": {
+        "smtp": {
+          "id": "z2LApZC6RxR7AdEb",
+          "name": "SMTP account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -856,9 +886,13 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-07-03T16:51:54.000Z",
-  "versionId": "6bfbb04c-9184-4f3d-bf50-ed31f7fc87fb"
+  "triggerCount": 1,
+  "updatedAt": "2025-07-03T17:07:01.000Z",
+  "versionId": "8a9a3d7a-3dbb-4c8a-8866-5ca263517731"
 }
