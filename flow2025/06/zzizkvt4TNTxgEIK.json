@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Basic LLM Chain": {
       "main": [
@@ -1076,6 +1076,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-06-30T05:19:52.000Z",
+  "updatedAt": "2025-07-05T16:08:00.000Z",
   "versionId": "bef26e9a-8519-46c8-b899-527b12e23d4c"
 }
